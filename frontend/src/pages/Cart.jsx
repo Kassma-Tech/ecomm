@@ -42,7 +42,7 @@ function Cart() {
 
             <div className="cart__checkout">
               <h4 >{`Subtotal(${quantity} items) : ${PriceFormatter(totalPrice)}`}</h4>
-              <Link to="/login">
+              <Link to="/shipping">
                 <button className='btn__checkout__item__cart'>Proceed to checkout</button>
               </Link>
             </div>

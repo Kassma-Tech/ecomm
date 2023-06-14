@@ -1,14 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import Button from './Button';
-import headphone2 from '../assets/Image/headphone2.png'
 import Rating from './Rating';
 import { Link } from 'react-router-dom';
 import { PriceFormatter } from '../utils/helper';
+
 const Product = ({ product }) => {
     return (
         <Wrapper>
-            {/* <h1 className='title'>Headphone for you</h1> */}
             <div className="product">
                 <div className="product__image">
                     <Link to={`/product/${product._id}`}>
@@ -23,12 +21,9 @@ const Product = ({ product }) => {
                     <div className="product__description">
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                     </div>
-
                     <div className="product__rating">
                         <Rating rating={product.product_rating} />
                     </div>
-
-                    <button>Click me</button>
                 </div>
             </div>
         </Wrapper>

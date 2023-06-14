@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 /*Images */
 import starLogo from '../assets/Image/starLogo.png'
@@ -9,13 +9,19 @@ import starLogo from '../assets/Image/starLogo.png'
 import { Dropdown, Space } from 'antd';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLogoutMutation } from '../endpoints/authApiSlice';
+import { setCredentials } from '../features/authSlice';
 
 const Header = () => {
 
+    const token = useSelector(state => state.auth.token);
     const { cartProducts } = useSelector(state => state.cart)
 
     const quantity = cartProducts.reduce((total, item) => total + item.noOfProduct, 0);
+
+    const [logout] = useLogoutMutation();
+    const dispatch = useDispatch();
 
     const items = [
         {
@@ -44,6 +50,15 @@ const Header = () => {
         },
     ];
 
+    const logOutHandler = async () => {
+        try {
+            await logout();
+            dispatch(setCredentials({ token: null }))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <Wrapper>
             <div className="header">
@@ -69,7 +84,10 @@ const Header = () => {
 
                 <div className='header__actions'>
                     <div style={{ display: 'flex' }}><ShoppingCartIcon /><Link to="/cart">Cart: {quantity}</Link></div>
-                    <div style={{ display: 'flex' }}><PersonIcon /> <Link to="/login">Sign In</Link></div>
+
+                    {!token
+                        ? <div style={{ display: 'flex' }}><PersonIcon /> <Link to="/login">Sign In</Link></div>
+                        : <div style={{ display: 'flex' }}><PersonIcon /> <Link onClick={logOutHandler}>Sign Out</Link></div>}
 
                 </div>
             </div>

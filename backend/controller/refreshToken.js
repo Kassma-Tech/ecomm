@@ -20,7 +20,7 @@ const refreshToken = async (req, res) => {
         if (err) return res.status(403).json({ message: "Forbidden" })
         console.log(data)
         const newToken = generateToken({ _id, name, email, role });
-        return res.status(200).json({ accessToken: newToken, refreshToken: refreshToken })
+        return res.status(200).json({ accessToken: newToken })
     })
 }
 

@@ -19,5 +19,5 @@ app.use(express.json())
 
 app.use('/', seeder)
 app.use('/api/v1', authRoute)
-app.use('/api/v1', product)
+app.use('/api/v1', authorize, product)
 app.listen(PORT, () => { console.log("Server started") }) 

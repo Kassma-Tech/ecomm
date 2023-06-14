@@ -26,8 +26,8 @@ const login = asyncHandler(async (req, res) => {
 
         await User.updateOne({ email: email }, { token: refreshToken })
 
-        res.cookie("refresh", refreshToken, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 })
-        res.status(200).send({ accessToken: accessToken, refreshToken: refreshToken })
+        res.cookie("refresh", refreshToken, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24, sameSite: 'None', secure: true })
+        res.status(200).send({ accessToken: accessToken })
 
     } else {
         res.status(401).json({ message: 'Password and email not matched' })
@@ -44,16 +44,15 @@ const logOut = async (req, res) => {
     const refreshToken = cookies?.refresh;
     const user = await User.findOne({ refreshToken });
 
+    console.log("From logout " + user)
     if (!user) {
-        res.clearCookie('refresh', { httpOnly: true, secure: true });
-        res.sendStatus(204);
+        return res.clearCookie('refresh', { httpOnly: true, secure: true, sameSite: 'None' }).sendStatus(204);
     }
 
-    user.refreshToken = '';
-    await user.save();
+    // user.refreshToken = '';
+    // await user.save();
 
-    res.clearCookie('refresh', { httpOnly: true, secure: true });
-    res.sendStatus(204);
+    res.clearCookie('refresh', { httpOnly: true, secure: true, sameSite: 'None' }).sendStatus(204);
 }
 
 const generateToken = (payload) => {

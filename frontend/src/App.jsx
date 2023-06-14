@@ -13,9 +13,9 @@ import Cart from './pages/Cart'
 import Login from './pages/Login'
 import RequireAuth from './protected_wrappers/RequireAuth'
 import PersistLogin from './protected_wrappers/PersistLogin'
+import Shipping from './pages/Shipping'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -24,12 +24,14 @@ function App() {
       <Routes >
         <Route path='/' Component={Home} />
         <Route path='/product/:id' Component={SingleProduct} />
+        <Route path='/cart' Component={Cart} />
 
         <Route Component={PersistLogin}>
           <Route Component={RequireAuth}>
-            <Route path='/cart' Component={Cart} />
+            <Route path='/shipping' Component={Shipping} />
           </Route>
         </Route>
+
         <Route path='/login' Component={Login} />
       </Routes>
     </>

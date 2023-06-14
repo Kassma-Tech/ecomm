@@ -30,7 +30,7 @@ const Login = () => {
         const result = await login(loginInfo).unwrap();
         console.log(result?.accessToken)
         dispatch(setCredentials({ token: result?.accessToken }))
-        const { from } = location.state || { from: location };
+        // const { from } = location.state || { from: location };
         navigate(-1, { replace: true });
         // <Navigate to="/login" state={{ from: location }} replace />
 

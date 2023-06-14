@@ -26,6 +26,8 @@ const PersistLogin = () => {
 
         if (token == null)
             reauth();
+        else
+            setIsLoading(false);
     }, [])
 
     return (
