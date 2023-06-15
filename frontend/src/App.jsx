@@ -14,6 +14,7 @@ import Login from './pages/Login'
 import RequireAuth from './protected_wrappers/RequireAuth'
 import PersistLogin from './protected_wrappers/PersistLogin'
 import Shipping from './pages/Shipping'
+import CheckOut from './pages/Checkout'
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
         <Route Component={PersistLogin}>
           <Route Component={RequireAuth}>
             <Route path='/shipping' Component={Shipping} />
+            <Route path='/checkout' Component={CheckOut} />
           </Route>
         </Route>
 

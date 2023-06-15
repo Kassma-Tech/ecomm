@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Button, Form, Space, Input, Select } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { addShippingInfo } from '../features/cartSlice';
+import { useNavigate } from 'react-router-dom';
 const CheckOut = () => {
     const dispatch = useDispatch();
 
     const { shippingInfo: initialInfo } = useSelector(state => state.cart);
 
+    const navigate = useNavigate();
     console.log(initialInfo)
     const [shippingInfo, setShippingInfo] = useState({
         first_name: initialInfo?.first_name,
@@ -27,7 +29,8 @@ const CheckOut = () => {
     }
 
     const handleSubmit = (e) => {
-        dispatch(addShippingInfo(shippingInfo))
+        dispatch(addShippingInfo(shippingInfo));
+        navigate("/checkout")
     }
     return (
         <>

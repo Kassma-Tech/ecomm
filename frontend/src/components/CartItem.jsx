@@ -46,8 +46,6 @@ function CartItem({ product_id, product_name, product_image, product_price, quan
 
               </div>
             </div>
-
-
           </div>
 
         </div>
