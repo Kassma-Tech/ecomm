@@ -12,7 +12,9 @@ const authorize = (req, res, next) => {
 
     jwt.verify(token, 'kassma', (err, data) => {
         if (err) return res.status(403).json({ message: 'Invalid token' })
-        next()
+
+        req.user = data;
+        next();
     })
 
 }

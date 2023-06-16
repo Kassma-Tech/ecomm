@@ -18,7 +18,6 @@ const refreshToken = async (req, res) => {
     jwt.verify(refreshToken, "kassmatech", (err, data) => {
         const { _id, name, email, role } = data;
         if (err) return res.status(403).json({ message: "Forbidden" })
-        console.log(data)
         const newToken = generateToken({ _id, name, email, role });
         return res.status(200).json({ accessToken: newToken })
     })

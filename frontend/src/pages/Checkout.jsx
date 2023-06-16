@@ -3,40 +3,23 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { PriceFormatter } from '../utils/helper'
 import { PayPalButton } from 'react-paypal-button-v2';
+import { useGetClientIdQuery } from '../endpoints/paymentApiSlice';
 const Checkout = () => {
     const { cartProducts } = useSelector((state) => state.cart);
     const quantity = cartProducts.reduce((total, item) => total + item.noOfProduct, 0);
     const totalPrice = cartProducts?.reduce((total, item) => total + item.totalItemPrice, 0)
-    const [setSdk, isSetSdk] = useState(false)
+    const [clientId, setClientId] = useState("");
+    const getClient = useGetClientIdQuery();
 
 
     useEffect(() => {
-        // const addScript = () => {
-        //     const script = document.createElement('script');
-        //     script.type = 'text/javascript';
-        //     script.src = `https://paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}`;
-        //     script.async = true;
-        //     script.onload = () => {
-        //         isSetSdk(true);
-        //     }
-        //     document.body.appendChild(script);
-        //     console.log("append script");
-        // }
-        // if (!window.paypal)
-        //     addScript();
-        // else
-        //     isSetSdk(true)
 
-        return () => {
-            Object.keys(window).forEach(key => {
-                if (/paypal|zoid|post_robot/.test(key)) {
-                    delete window[key];
-                }
-            });
+        const { data } = getClient;
 
-            document.querySelectorAll('script[src*="www.paypal.com/sdk"]').forEach(node => node.remove());
-        };
-    }, [])
+        if (data?.clientId != undefined)
+            setClientId(data?.clientId)
+
+    }, [getClient])
 
     const successHandler = (PaymentResult) => {
         console.log(PaymentResult)
@@ -80,12 +63,12 @@ const Checkout = () => {
                             <span>{PriceFormatter(totalPrice)}</span>
                         </div>
 
-                        <PayPalButton amount={totalPrice * 0.01} onSuccess={successHandler} options={{
+                        {clientId.length > 0 && <PayPalButton amount={totalPrice * 0.01} onSuccess={successHandler} options={{
                             currency: 'USD',
-                            clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID,
+                            clientId: clientId,
                             vault: false,
                             intent: 'capture'
-                        }}></PayPalButton>
+                        }}></PayPalButton>}
 
                     </div>
                 </div>
