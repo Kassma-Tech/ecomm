@@ -2,10 +2,10 @@ const { getCart, addCart, updateCart, removeFromCart } = require("../controller/
 
 const route = require("express").Router();
 
-route.get("/cart", getCart);
-route.post("/cart", addCart)
-route.put("/cart/:id", updateCart)
-route.delete("/cart/:id", removeFromCart)
+route.get("/", getCart);
+route.post("/", addCart)
+route.put("/:id", updateCart)
+route.delete("/:id", removeFromCart)
 
 
 module.exports = route;
