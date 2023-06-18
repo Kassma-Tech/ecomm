@@ -11,6 +11,7 @@ import { addToCart } from "../features/cartSlice";
 import { PriceFormatter } from "../utils/helper";
 import { message } from "antd";
 import { useGetSingleProductQuery } from "../endpoints/productApiSlice";
+import { useCartMutation } from "../endpoints/cartApiSlice";
 /*components */
 
 function SingleProduct(props) {
@@ -27,12 +28,15 @@ function SingleProduct(props) {
 
   const dispatch = useDispatch();
   const { data: singleProduct = {} } = useGetSingleProductQuery(id);
-  console.log(singleProduct)
-  const { cartProducts } = useSelector((state) => state.cart);
+  const [cart] = useCartMutation();
+
+  const cartProducts = () => {
+    return useSelector((state) => state.cart.cartProducts);
+  }
 
   const products = singleProduct;
 
-  const selectedProduct = cartProducts?.find(item => singleProduct._id === item._id)
+  const selectedProduct = cartProducts()?.find(item => singleProduct._id === item._id)
 
   const increase = () => {
     if (singleProduct.itemsInStock > itemCount)
@@ -44,15 +48,18 @@ function SingleProduct(props) {
       setItemCount(itemCount - 1);
   };
 
-  const addToCartHandler = (product) => {
+  const addToCartHandler = async (product) => {
     if (selectedProduct?.itemsInStock < itemCount + selectedProduct?.noOfProduct) {
       messages('error', `Only ${selectedProduct?.itemsInStock - selectedProduct?.noOfProduct} item left`);
     }
     else {
       dispatch(addToCart({ product, itemCount }));
+      const result = await cart({ cartProducts }).unwrap();
+      console.log(cartProducts())
       setItemCount(1);
     }
   };
+
   return (
     <Wrapper>
       {contextHolder}

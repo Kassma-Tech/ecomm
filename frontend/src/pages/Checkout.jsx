@@ -4,13 +4,20 @@ import { useSelector } from "react-redux";
 import { PriceFormatter } from '../utils/helper'
 import { PayPalButton } from 'react-paypal-button-v2';
 import { useGetClientIdQuery } from '../endpoints/paymentApiSlice';
+import axios from 'axios'
+import { usePlaceOrderMutation } from '../endpoints/orderApiSlice';
 const Checkout = () => {
     const { cartProducts } = useSelector((state) => state.cart);
+    const { shippingInfo } = useSelector(state => state.cart);
     const quantity = cartProducts.reduce((total, item) => total + item.noOfProduct, 0);
     const totalPrice = cartProducts?.reduce((total, item) => total + item.totalItemPrice, 0)
     const [clientId, setClientId] = useState("");
     const getClient = useGetClientIdQuery();
+    const [placeOrder] = usePlaceOrderMutation();
 
+    console.log(shippingInfo);
+    console.log(cartProducts)
+    let dataToBeSend = ''
 
     useEffect(() => {
 
@@ -19,10 +26,14 @@ const Checkout = () => {
         if (data?.clientId != undefined)
             setClientId(data?.clientId)
 
-    }, [getClient])
+    }, [getClient, dataToBeSend])
 
-    const successHandler = (PaymentResult) => {
-        console.log(PaymentResult)
+    const successHandler = async (PaymentResult) => {
+        const result = await placeOrder({
+            PaymentResult,
+            shippingInfo,
+            cartProducts
+        }).unwrap();
     }
 
     return (

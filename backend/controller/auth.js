@@ -44,13 +44,9 @@ const logOut = async (req, res) => {
     const refreshToken = cookies?.refresh;
     const user = await User.findOne({ refreshToken });
 
-    console.log("From logout " + user)
     if (!user) {
         return res.clearCookie('refresh', { httpOnly: true, secure: true, sameSite: 'None' }).sendStatus(204);
     }
-
-    // user.refreshToken = '';
-    // await user.save();
 
     res.clearCookie('refresh', { httpOnly: true, secure: true, sameSite: 'None' }).sendStatus(204);
 }

@@ -14,25 +14,26 @@ const getCart = asyncHandler(async (req, res) => {
 })
 
 const addCart = asyncHandler(async (req, res) => {
-    const { product_name, product_image, product_price, product_rating, totalItemPrice, noOfReview, itemInStock, noOfProduct } = req.body;
-    const user = req.user;
+    // const { product_name, product_image, product_price, product_rating, totalItemPrice, noOfReview, itemInStock, noOfProduct } = req.body;
+    // const user = req.user;
 
-    const cart = new Cart({
-        product_name: product_name,
-        product_image,
-        product_price,
-        product_rating,
-        totalItemPrice,
-        noOfReview,
-        itemInStock,
-        noOfProduct,
-        user: user._id
-    })
-    const result = await Cart.create(cart)
-    console.log(result)
+    // const cart = new Cart({
+    //     product_name: product_name,
+    //     product_image,
+    //     product_price,
+    //     product_rating,
+    //     totalItemPrice,
+    //     noOfReview,
+    //     itemInStock,
+    //     noOfProduct,
+    //     user: user._id
+    // })
+    // const result = await Cart.create(cart)
+    // console.log(result)
 
-    if (!result) return res.sendStatus(400)
-    res.status(200).json({ data: result })
+    // if (!result) return res.sendStatus(400)
+    console.log(req.body)
+    res.status(200).json({ data: req.body })
 })
 
 

@@ -22,16 +22,20 @@ const cartSlice = createSlice({
         );
         if (previousItem < 0) {
           state.cartProducts.push({
+
             ...action.payload.product,
             noOfProduct: action.payload.itemCount,
+
             totalItemPrice:
               action.payload.itemCount * action.payload.product.product_price,
           });
         } else {
           state.cartProducts[previousItem] = {
             ...state.cartProducts[previousItem],
+
             noOfProduct: (state.cartProducts[previousItem].noOfProduct +=
               action.payload.itemCount),
+
             totalItemPrice: (state.cartProducts[previousItem].totalItemPrice +=
               state.cartProducts[previousItem].product_price *
               action.payload.itemCount),
@@ -40,6 +44,7 @@ const cartSlice = createSlice({
 
         let tempTotalPrice = 0;
         let tempQuantity = 0;
+
         state.cartProducts?.map((item) => {
           tempTotalPrice += item.totalItemPrice;
           tempQuantity += item.noOfProduct;
@@ -60,8 +65,10 @@ const cartSlice = createSlice({
     },
     updateCartQuantity: (state, action) => {
       state.cartProducts?.map(item => {
+
         if (item._id === action.payload.id) {
           item.noOfProduct = Number(action.payload.value);
+
           item.totalItemPrice = item.noOfProduct * item.product_price
           localStorage.setItem("cartProducts", JSON.stringify(state.cartProducts));
           return
