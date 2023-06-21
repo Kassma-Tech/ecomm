@@ -1,5 +1,7 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 import { json } from "react-router-dom";
+import BASE_URL from "../URL/url";
+import { useSelector } from "react-redux";
 
 
 
@@ -52,6 +54,15 @@ const cartSlice = createSlice({
 
         state.totalPrice = tempTotalPrice;
         state.quantity = tempQuantity;
+
+        // console.log(action.payload.token)
+        // BASE_URL.post('/api/v1/cart', state.cartProducts, {
+        //   withCredentials: true,
+        //   headers: {
+        //     "authorization": `Bearer ${action.payload.token}`
+        //   }
+        // }).then(res => console.log(res.data))
+
         localStorage.setItem("cartProducts", JSON.stringify(state.cartProducts));
       },
       prepare({ product, itemCount }) {
@@ -62,6 +73,9 @@ const cartSlice = createSlice({
       const filteredCart = state.cartProducts?.filter(item => item._id !== action.payload);
       state.cartProducts = filteredCart
       localStorage.setItem("cartProducts", JSON.stringify(state.cartProducts));
+    },
+    setCart: (state, action) => {
+      state.cartProducts = action.payload.cartItems;
     },
     updateCartQuantity: (state, action) => {
       state.cartProducts?.map(item => {
@@ -82,5 +96,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, cartTotalPrice, removeFromCart, updateCartQuantity, addShippingInfo } = cartSlice.actions;
+
+export const { addToCart, cartTotalPrice, removeFromCart, setCart, updateCartQuantity, addShippingInfo } = cartSlice.actions;
 export default cartSlice.reducer;

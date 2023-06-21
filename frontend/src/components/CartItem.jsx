@@ -4,15 +4,24 @@ import styled from 'styled-components'
 import { useDispatch } from 'react-redux';
 import { removeFromCart, updateCartQuantity } from '../features/cartSlice';
 import { PriceFormatter } from '../utils/helper';
+import { useRemoveCartMutation } from '../endpoints/cartApiSlice';
 
 function CartItem({ product_id, product_name, product_image, product_price, quantity, rating, noOfReview, itemsInStock }) {
 
   const dispatch = useDispatch();
+  const [removeCart] = useRemoveCartMutation();
+
   const handleRemoveFromCart = (id) => {
     dispatch(removeFromCart(id))
   }
 
-  const updateCartHandler = (id, value) => {
+  const updateCartHandler = async (id, value) => {
+    try {
+      const res = await removeCart(id).unwrap();
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
     dispatch(updateCartQuantity({ id, value }))
   }
 

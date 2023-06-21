@@ -52,6 +52,6 @@ const logOut = async (req, res) => {
 }
 
 const generateToken = (payload) => {
-    return jwt.sign(payload, 'kassma', { expiresIn: '30m' })
+    return jwt.sign(payload, 'kassma', { expiresIn: '1h' })
 }
 module.exports = { login, logOut, generateToken }

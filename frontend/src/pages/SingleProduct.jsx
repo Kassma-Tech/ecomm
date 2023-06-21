@@ -12,13 +12,14 @@ import { PriceFormatter } from "../utils/helper";
 import { message } from "antd";
 import { useGetSingleProductQuery } from "../endpoints/productApiSlice";
 import { useCartMutation } from "../endpoints/cartApiSlice";
+import useCartProducts from "../hooks/useCartProducts";
 /*components */
 
 function SingleProduct(props) {
   const [itemCount, setItemCount] = useState(1);
   const { id } = useParams();
   const [messageApi, contextHolder] = message.useMessage();
-
+  const cartProd = useCartProducts();
   const messages = (type, content) => {
     messageApi.open({
       type: type,
@@ -30,13 +31,12 @@ function SingleProduct(props) {
   const { data: singleProduct = {} } = useGetSingleProductQuery(id);
   const [cart] = useCartMutation();
 
-  const cartProducts = () => {
-    return useSelector((state) => state.cart.cartProducts);
-  }
+  const cartProducts = useSelector((state) => state.cart.cartProducts);
+  const token = useSelector((state) => state.auth.token);
 
   const products = singleProduct;
 
-  const selectedProduct = cartProducts()?.find(item => singleProduct._id === item._id)
+  const selectedProduct = cartProducts?.find(item => singleProduct._id === item._id)
 
   const increase = () => {
     if (singleProduct.itemsInStock > itemCount)
@@ -54,8 +54,11 @@ function SingleProduct(props) {
     }
     else {
       dispatch(addToCart({ product, itemCount }));
-      const result = await cart({ cartProducts }).unwrap();
-      console.log(cartProducts())
+
+      const cartItems = JSON.parse(localStorage.getItem('cartProducts'));
+      const result = await cart(cartItems).unwrap();
+      console.log(result)
+      console.log("local storage ", cartItems)
       setItemCount(1);
     }
   };

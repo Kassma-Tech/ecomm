@@ -1,16 +1,22 @@
 import { Button, Checkbox, Form, Input } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../endpoints/authApiSlice';
 import { setCredentials } from '../features/authSlice';
+import { useGetCartQuery } from '../endpoints/cartApiSlice';
+import { setCart } from '../features/cartSlice';
+import useCartProducts from '../hooks/useCartProducts';
+import BASE_URL from '../URL/url';
 
 const Login = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const [isLogin, setIsLogin] = useState(false);
     const [login] = useLoginMutation();
+
+    const data = useCartProducts();
 
     const [loginInfo, setLoginInfo] = useState({
         email: '',
@@ -23,17 +29,20 @@ const Login = () => {
             [e.target.name]: e.target.value
         })
     }
-
-    // const location = useLocation();
     const submitHandler = async () => {
-
         const result = await login(loginInfo).unwrap();
-        console.log(result?.accessToken)
-        dispatch(setCredentials({ token: result?.accessToken }))
-        // const { from } = location.state || { from: location };
-        navigate(-1, { replace: true });
-        // <Navigate to="/login" state={{ from: location }} replace />
+        dispatch(setCredentials({ token: result?.accessToken }));
 
+        await BASE_URL.get('/api/v1/cart', {
+            withCredentials: true,
+            headers: {
+                "authorization": `Bearer ${result?.accessToken}`
+            }
+        }).then(res => {
+            dispatch(setCart({ cartItems: res.data.data }));
+            localStorage.setItem('cartProducts', JSON.stringify(res.data.data));
+        }).catch(err => console.log(err))
+        navigate(-1, { replace: true });
     }
 
     return (

@@ -12,13 +12,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLogoutMutation } from '../endpoints/authApiSlice';
 import { setCredentials } from '../features/authSlice';
+import { setCart } from '../features/cartSlice';
 
 const Header = () => {
 
     const token = useSelector(state => state.auth.token);
     const { cartProducts } = useSelector(state => state.cart)
 
-    const quantity = cartProducts.reduce((total, item) => total + item.noOfProduct, 0);
+    const quantity = cartProducts?.reduce((total, item) => total + item.noOfProduct, 0);
 
     const [logout] = useLogoutMutation();
     const dispatch = useDispatch();
@@ -53,6 +54,8 @@ const Header = () => {
     const logOutHandler = async () => {
         try {
             await logout();
+            dispatch(setCart({ cartItems: [] }));
+            localStorage.removeItem('cartProducts')
             dispatch(setCredentials({ token: null }))
         } catch (error) {
             console.log(error)

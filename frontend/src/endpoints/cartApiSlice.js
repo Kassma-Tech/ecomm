@@ -8,8 +8,20 @@ const orderApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: { orderInfo }
             })
+        }),
+        removeCart: builder.mutation({
+            query: item_id => ({
+                url: `/api/v1/cart/${item_id}`,
+                method: 'DELETE',
+            })
+        }),
+        getCart: builder.query({
+            query: () => ({
+                url: "/api/v1/cart",
+                method: "GET"
+            })
         })
     })
 })
 
-export const { useCartMutation } = orderApiSlice;
+export const { useCartMutation, useRemoveCartMutation, useGetCartQuery } = orderApiSlice;
