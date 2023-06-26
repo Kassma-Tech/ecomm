@@ -1,7 +1,7 @@
-const { test } = require('../controller/order');
+const { createOrder } = require('../controller/order');
 
 const route = require('express').Router();
 
-route.post('/test', test)
+route.post('/order', createOrder)
 
 module.exports = route

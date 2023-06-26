@@ -15,6 +15,13 @@ const orderApiSlice = apiSlice.injectEndpoints({
                 method: 'DELETE',
             })
         }),
+        updateQty: builder.mutation({
+            query: ({ item_id, noOfProduct, totalItemPrice }) => ({
+                url: `/api/v1/cart/updateqty/${item_id}`,
+                method: 'PATCH',
+                body: { noOfProduct, totalItemPrice }
+            })
+        }),
         getCart: builder.query({
             query: () => ({
                 url: "/api/v1/cart",
@@ -24,4 +31,4 @@ const orderApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const { useCartMutation, useRemoveCartMutation, useGetCartQuery } = orderApiSlice;
+export const { useCartMutation, useRemoveCartMutation, useGetCartQuery, useUpdateQtyMutation } = orderApiSlice;

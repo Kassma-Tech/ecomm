@@ -15,6 +15,7 @@ import RequireAuth from './protected_wrappers/RequireAuth'
 import PersistLogin from './protected_wrappers/PersistLogin'
 import Shipping from './pages/Shipping'
 import CheckOut from './pages/Checkout'
+import Thankyou from './pages/Thankyou'
 
 function App() {
 
@@ -23,14 +24,16 @@ function App() {
       <TopHeader />
       <Header />
       <Routes >
-        <Route path='/' Component={Home} />
-        <Route path='/product/:id' Component={SingleProduct} />
-        <Route path='/cart' Component={Cart} />
 
         <Route Component={PersistLogin}>
+          <Route path='/' Component={Home} />
+          <Route path='/product/:id' Component={SingleProduct} />
+          <Route path='/cart' Component={Cart} />
+
           <Route Component={RequireAuth}>
             <Route path='/shipping' Component={Shipping} />
             <Route path='/checkout' Component={CheckOut} />
+            <Route path='/thanks' Component={Thankyou} />
           </Route>
         </Route>
 

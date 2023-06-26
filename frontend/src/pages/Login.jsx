@@ -33,6 +33,15 @@ const Login = () => {
         const result = await login(loginInfo).unwrap();
         dispatch(setCredentials({ token: result?.accessToken }));
 
+        await BASE_URL.put('/api/v1/cart/updatecart', JSON.parse(localStorage.getItem('cartProducts')), {
+            withCredentials: true,
+            headers: {
+                "authorization": `Bearer ${result?.accessToken}`
+            }
+        }).then(res => console.log(res.data))
+            .catch(err => console.log(err));
+
+
         await BASE_URL.get('/api/v1/cart', {
             withCredentials: true,
             headers: {
@@ -42,6 +51,7 @@ const Login = () => {
             dispatch(setCart({ cartItems: res.data.data }));
             localStorage.setItem('cartProducts', JSON.stringify(res.data.data));
         }).catch(err => console.log(err))
+
         navigate(-1, { replace: true });
     }
 

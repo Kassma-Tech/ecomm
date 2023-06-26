@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PriceFormatter } from '../utils/helper'
 import { PayPalButton } from 'react-paypal-button-v2';
 import { useGetClientIdQuery } from '../endpoints/paymentApiSlice';
 import axios from 'axios'
 import { usePlaceOrderMutation } from '../endpoints/orderApiSlice';
+import { useNavigate } from 'react-router-dom';
+import { setCart } from '../features/cartSlice';
+
 const Checkout = () => {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { cartProducts } = useSelector((state) => state.cart);
     const { shippingInfo } = useSelector(state => state.cart);
     const quantity = cartProducts.reduce((total, item) => total + item.noOfProduct, 0);
@@ -29,11 +35,20 @@ const Checkout = () => {
     }, [getClient, dataToBeSend])
 
     const successHandler = async (PaymentResult) => {
-        const result = await placeOrder({
-            PaymentResult,
-            shippingInfo,
-            cartProducts
-        }).unwrap();
+        try {
+            const result = await placeOrder({
+                PaymentResult,
+                shippingInfo,
+                cartProducts
+            }).unwrap();
+
+            localStorage.removeItem('cartProducts');
+            dispatch(setCart({ cartItems: [] }))
+            navigate('/thanks')
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (

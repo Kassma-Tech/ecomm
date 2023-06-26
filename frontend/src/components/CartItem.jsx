@@ -1,27 +1,36 @@
 import React from 'react'
 import Rating from './Rating';
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart, updateCartQuantity } from '../features/cartSlice';
 import { PriceFormatter } from '../utils/helper';
-import { useRemoveCartMutation } from '../endpoints/cartApiSlice';
+import { useRemoveCartMutation, useUpdateQtyMutation } from '../endpoints/cartApiSlice';
 
-function CartItem({ product_id, product_name, product_image, product_price, quantity, rating, noOfReview, itemsInStock }) {
+function CartItem({ product_id, product_name, product_image, product_price, quantity, rating, noOfReview, itemsInStock, totalItemPrice, noOfProduct }) {
+
+  const token = useSelector(state => state.auth.token);
 
   const dispatch = useDispatch();
   const [removeCart] = useRemoveCartMutation();
+  const [updateQty] = useUpdateQtyMutation();
 
-  const handleRemoveFromCart = (id) => {
+  const handleRemoveFromCart = async (id) => {
+    console.log(token)
+    console.log(id)
+    if (token) {
+      try {
+        const res = await removeCart(id).unwrap();
+        console.log(res)
+      } catch (error) {
+        console.log(error)
+      }
+    }
     dispatch(removeFromCart(id))
   }
 
+
+
   const updateCartHandler = async (id, value) => {
-    try {
-      const res = await removeCart(id).unwrap();
-      console.log(res)
-    } catch (error) {
-      console.log(error)
-    }
     dispatch(updateCartQuantity({ id, value }))
   }
 

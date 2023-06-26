@@ -55,10 +55,11 @@ function SingleProduct(props) {
     else {
       dispatch(addToCart({ product, itemCount }));
 
-      const cartItems = JSON.parse(localStorage.getItem('cartProducts'));
-      const result = await cart(cartItems).unwrap();
-      console.log(result)
-      console.log("local storage ", cartItems)
+      if (token) {
+        const cartItems = JSON.parse(localStorage.getItem('cartProducts'));
+        const result = await cart(cartItems).unwrap();
+      }
+
       setItemCount(1);
     }
   };

@@ -20,7 +20,7 @@ const cartSlice = createSlice({
     addToCart: {
       reducer: (state, action) => {
         const previousItem = state.cartProducts.findIndex(
-          (item) => item._id === action.payload.product._id
+          (item) => item._id == action.payload.product._id
         );
         if (previousItem < 0) {
           state.cartProducts.push({
@@ -54,14 +54,6 @@ const cartSlice = createSlice({
 
         state.totalPrice = tempTotalPrice;
         state.quantity = tempQuantity;
-
-        // console.log(action.payload.token)
-        // BASE_URL.post('/api/v1/cart', state.cartProducts, {
-        //   withCredentials: true,
-        //   headers: {
-        //     "authorization": `Bearer ${action.payload.token}`
-        //   }
-        // }).then(res => console.log(res.data))
 
         localStorage.setItem("cartProducts", JSON.stringify(state.cartProducts));
       },

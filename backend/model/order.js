@@ -1,10 +1,16 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    product_id: [
-        { type: String }
+    product_info: [
+        {
+            product_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+            noOfProduct: { type: Number },
+            product_price: { type: Number },
+            totalItemPrice: { type: Number }
+        }
     ],
+
     shipping_Info: {
         first_name: { type: String, required: true },
         last_name: { type: String },
@@ -13,7 +19,6 @@ const orderSchema = new mongoose.Schema({
         city: { type: String, required: true },
         postal_code: { type: Number, required: true },
         country: { type: String, required: true },
-        merchant_id: { type: String, required: true },
     },
 
     payment: {
