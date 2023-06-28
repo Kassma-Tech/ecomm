@@ -21,8 +21,6 @@ const register = asyncHandler(async (req, res) => {
 
     const registeredUser = await User.findOne({ email: email })
 
-    console.log(registeredUser)
-
     const payload = {
         _id: registeredUser._id,
         name: registeredUser.name,
