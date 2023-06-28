@@ -1,5 +1,5 @@
 const Order = require('../model/order');
-const product = require('../model/product');
+const product = require('../model/product.js');
 const cart = require('../model/cart');
 
 const createOrder = async (req, res) => {
@@ -23,6 +23,7 @@ const createOrder = async (req, res) => {
     if (PaymentResult.status === 'COMPLETED') {
 
         const result = await Order.insertMany({
+            user: _id,
             product_info: newCart,
             shipping_Info: shippingInfo,
             payment: {
@@ -40,29 +41,34 @@ const createOrder = async (req, res) => {
 
 
         await cart.deleteMany();
-
-        // console.log(typeof (newCart))
-        // console.log(newCart)
-        // if (typeof newCart === 'array')
         newCart?.map(async item => {
+            // console.log("Hellllllllllllllllllllllo")
             const { itemsInStock: itemsInStk } = await product.findById(item.product_id);
             const res = await product.updateOne({ _id: item.product_id }, { $set: { itemsInStock: itemsInStk - item.noOfProduct } })
         })
 
+        const Res = {
+            order: result[0].product_info,
+            totalPrice: result[0].payment.amount
+        }
 
-        res.status(200).json(result)
+        res.status(200).json(Res)
     }
 }
 
-const test = async (req, res) => {
-    // console.log(req.body)
-    const { _id } = req.user;
+const getOrder = async (req, res) => {
+    const { _id: id } = req.user;
 
-    console.log(_id)
-    res.send(req.body)
+    try {
+        const result = await Order.find({ user: id });
+        res.status(200).json(result)
+    } catch (error) {
+        res.status(400).json(error?.message)
+    }
 }
 
 
 module.exports = {
-    createOrder
+    createOrder,
+    getOrder
 }

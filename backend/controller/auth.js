@@ -3,6 +3,39 @@ const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
 const User = require('../model/user')
 
+const register = asyncHandler(async (req, res) => {
+    const { name, password, email, role } = req.body;
+
+    if (!name || !password || !email) return res.status(400).json({ message: "All fields must be filled" });
+
+    const isExist = await User.findOne({ email: email });
+
+    if (isExist) return res.status(400).json({ message: "This email is already registered" });
+
+    let register;
+
+    if (role)
+        register = await User.create({ email, name, password, role });
+    else
+        register = await User.create({ email, name, password });
+
+    const registeredUser = await User.findOne({ email: email })
+
+    console.log(registeredUser)
+
+    const payload = {
+        _id: registeredUser._id,
+        name: registeredUser.name,
+        email: registeredUser.email,
+        role: registeredUser.role
+    }
+
+    const accessToken = generateToken(payload);
+    const refreshToken = jwt.sign(payload, 'kassmatech', { expiresIn: '1d' });
+
+    res.cookie('refresh', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 1000 * 60 * 60 * 24 }).json({ accessToken: accessToken })
+})
+
 
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body
@@ -54,4 +87,4 @@ const logOut = async (req, res) => {
 const generateToken = (payload) => {
     return jwt.sign(payload, 'kassma', { expiresIn: '1h' })
 }
-module.exports = { login, logOut, generateToken }
+module.exports = { login, logOut, generateToken, register }
