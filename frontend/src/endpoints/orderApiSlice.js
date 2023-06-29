@@ -13,13 +13,15 @@ const orderApiSlice = apiSlice.injectEndpoints({
             query: () => ({
                 url: `/api/v1/order/single`,
                 method: 'GET',
-            })
+            }),
+            refetchOnMountOrArgChange: true
         }),
         getAllOrder: builder.query({
             query: () => ({
                 url: `/api/v1/order/`,
                 method: 'GET',
-            })
+            }),
+            refetchOnMountOrArgChange: true
         })
     })
 })

@@ -1,48 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { PriceFormatter } from '../utils/helper';
-import { useLocation } from 'react-router-dom';
 import { useGetSingleOrderQuery } from '../endpoints/orderApiSlice';
 
 const PurchaseHistory = () => {
-    const [userOrder, setUserOrder] = useState([])
-    const fetch = useGetSingleOrderQuery();
+  const [userOrder, setUserOrder] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const fetch = useGetSingleOrderQuery();
 
-    useEffect(() => {
-        const { data } = fetch;
-        setUserOrder(data)
-    }, [userOrder, fetch])
+  useEffect(() => {
+    const { data } = fetch;
+    setIsLoading(false)
+    setUserOrder(data)
+  }, [fetch])
 
-    return (
-        <Wrapper>
-            <h1>Purchase history</h1>
-            <div className="cart__items">
-                {userOrder?.map((p, i) => (
-                    p.product_info?.map((product, index) => {
-                        return <div className='cart__item__container' key={index}>
-                            <div className="product__image">
-                                <img src={product?.product_image} alt="" />
-                            </div>
-                            {console.log(product)}
-                            <div className="product__description">
-                                <div className="cart__item__title">
-                                    <h6>{product?.product_name?.length > 50 ? product?.product_name.substring(0, 50).concat(" ...") : product.product_name}</h6>
-                                    <h2>{`${PriceFormatter(product.product_price)}`}</h2>
-                                </div>
+  return (
+    isLoading ? <h1>Loading ...</h1> :
+      <Wrapper>
+        <h1>Purchase history</h1>
+        <div className="cart__items">
+          {userOrder?.map((p, i) => (
+            p.product_info?.map((product, index) => {
+              return <div className='cart__item__container' key={index}>
+                <div className="product__image">
+                  <img src={product?.product_image} alt="" />
+                </div>
+                <div className="product__description">
+                  <div className="cart__item__title">
+                    <h6>{product?.product_name?.length > 50 ? product?.product_name.substring(0, 50).concat(" ...") : product.product_name}</h6>
+                    <h2>{`${PriceFormatter(product.product_price)}`}</h2>
+                  </div>
 
-                                <div className='item__price'>
-                                    <p>Qty: {product.noOfProduct}</p>
-                                    <h6>{PriceFormatter(product.totalItemPrice)}</h6>
-                                </div>
-                            </div>
-                        </div>
-                    })
+                  <div className='item__price'>
+                    <p>Qty: {product.noOfProduct}</p>
+                    <h6>{PriceFormatter(product.totalItemPrice)}</h6>
+                  </div>
+                </div>
+              </div>
+            })
 
-                ))}
+          ))}
 
-            </div>
-        </Wrapper>
-    );
+        </div>
+      </Wrapper>
+  );
 }
 const Wrapper = styled.div`
 h1 {
