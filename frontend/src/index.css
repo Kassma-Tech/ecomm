@@ -23,3 +23,9 @@
 .ant-spin-dot-item {
   background-color: red;
 }
+
+.ant-select-selection {
+  background-color: transparent !important;
+  font-size: 2rem !important;
+  font-weight: 900 !important;
+}

@@ -17,6 +17,7 @@ import Shipping from './pages/Shipping'
 import CheckOut from './pages/Checkout'
 import Thankyou from './pages/Thankyou'
 import Register from './pages/Register'
+import PurchaseHistory from './pages/PurchaseHistory'
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
             <Route path='/shipping' Component={Shipping} />
             <Route path='/checkout' Component={CheckOut} />
             <Route path='/thanks' Component={Thankyou} />
+            <Route path='/purchase-history' Component={PurchaseHistory} />
           </Route>
         </Route>
 

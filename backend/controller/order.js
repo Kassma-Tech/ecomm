@@ -17,7 +17,6 @@ const createOrder = async (req, res) => {
                 product_id: item.product_id || item._id
             }
         )
-
     })
 
     if (PaymentResult.status === 'COMPLETED') {
@@ -42,7 +41,6 @@ const createOrder = async (req, res) => {
 
         await cart.deleteMany();
         newCart?.map(async item => {
-            // console.log("Hellllllllllllllllllllllo")
             const { itemsInStock: itemsInStk } = await product.findById(item.product_id);
             const res = await product.updateOne({ _id: item.product_id }, { $set: { itemsInStock: itemsInStk - item.noOfProduct } })
         })
@@ -57,10 +55,11 @@ const createOrder = async (req, res) => {
 }
 
 const getOrder = async (req, res) => {
+    console.log("first")
     const { _id: id } = req.user;
 
     try {
-        const result = await Order.find({ user: id });
+        const result = await Order.find({ user: id }).select('product_info');
         res.status(200).json(result)
     } catch (error) {
         res.status(400).json(error?.message)

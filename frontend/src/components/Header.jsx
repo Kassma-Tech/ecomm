@@ -6,9 +6,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import starLogo from '../assets/Image/starLogo.png'
 
 /* 3rd Parties */
-import { Dropdown, Space } from 'antd';
+import { Dropdown, Select, Space } from 'antd';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
+import HistoryIcon from '@mui/icons-material/History';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLogoutMutation } from '../endpoints/authApiSlice';
 import { setCredentials } from '../features/authSlice';
@@ -51,6 +52,24 @@ const Header = () => {
         },
     ];
 
+    const items1 = [
+        {
+            label: (
+                <Link to='/profile'>
+                    <PersonIcon /> Profile
+                </Link>
+            ),
+            key: '0',
+        },
+        {
+            label: (
+                <Link to='purchase-history'>
+                    <HistoryIcon /> Purchase History
+                </Link>
+            ),
+            key: '1',
+        }
+    ]
     const logOutHandler = async () => {
         try {
             await logout();
@@ -72,7 +91,24 @@ const Header = () => {
                 <div className='header__menus'>
                     <Dropdown
                         menu={{
-                            items,
+                            items: [
+                                {
+                                    label: (
+                                        <Link target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                                            1st menu item
+                                        </Link>
+                                    ),
+                                    key: '0',
+                                },
+                                {
+                                    label: (
+                                        <Link target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+                                            2nd menu item
+                                        </Link>
+                                    ),
+                                    key: '1',
+                                },
+                            ]
                         }}
                     >
                         <Link onClick={(e) => e.preventDefault()}>
@@ -92,7 +128,35 @@ const Header = () => {
                         ? <div style={{ display: 'flex' }}><PersonIcon /> <Link to="/login">Sign In</Link></div>
                         : <div style={{ display: 'flex' }}><PersonIcon /> <Link onClick={logOutHandler}>Sign Out</Link></div>}
 
-                    {!token && <div style={{ display: 'flex' }}><PersonIcon /> <Link to='/register'>Register</Link></div>}
+                    {!token ? <div style={{ display: 'flex' }}><PersonIcon /> <Link to='/register'>Register</Link></div>
+                        : <Dropdown
+                            menu={{
+                                items: [
+                                    {
+                                        label: (
+                                            <Link to='/profile'>
+                                                <PersonIcon /> Profile
+                                            </Link>
+                                        ),
+                                        key: '0',
+                                    },
+                                    {
+                                        label: (
+                                            <Link to='purchase-history'>
+                                                <HistoryIcon /> Purchase History
+                                            </Link>
+                                        ),
+                                        key: '1',
+                                    }
+                                ],
+                            }}
+                        >
+                            <Link onClick={(e) => e.preventDefault()}>
+                                Profile
+                            </Link>
+                        </Dropdown>
+
+                    }
                 </div>
             </div>
         </Wrapper>

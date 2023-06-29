@@ -8,8 +8,24 @@ const orderApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: { orderInfo }
             })
+        }),
+        getSingleOrder: builder.query({
+            query: () => ({
+                url: `/api/v1/order/single`,
+                method: 'GET',
+            })
+        }),
+        getAllOrder: builder.query({
+            query: () => ({
+                url: `/api/v1/order/`,
+                method: 'GET',
+            })
         })
     })
 })
 
-export const { usePlaceOrderMutation } = orderApiSlice;
+export const {
+    usePlaceOrderMutation,
+    useGetSingleOrderQuery,
+    useGetAllOrderQuery
+} = orderApiSlice;
