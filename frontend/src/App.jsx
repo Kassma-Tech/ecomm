@@ -16,6 +16,7 @@ import PersistLogin from './protected_wrappers/PersistLogin'
 import Shipping from './pages/Shipping'
 import CheckOut from './pages/Checkout'
 import Thankyou from './pages/Thankyou'
+import Register from './pages/Register'
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
         </Route>
 
         <Route path='/login' Component={Login} />
+        <Route path='/register' Component={Register} />
       </Routes>
     </>
   )

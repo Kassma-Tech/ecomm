@@ -92,6 +92,7 @@ const Header = () => {
                         ? <div style={{ display: 'flex' }}><PersonIcon /> <Link to="/login">Sign In</Link></div>
                         : <div style={{ display: 'flex' }}><PersonIcon /> <Link onClick={logOutHandler}>Sign Out</Link></div>}
 
+                    {!token && <div style={{ display: 'flex' }}><PersonIcon /> <Link to='/register'>Register</Link></div>}
                 </div>
             </div>
         </Wrapper>

@@ -14,10 +14,12 @@ const register = asyncHandler(async (req, res) => {
 
     let register;
 
+    const hashPassword = await bcrypt.hashSync(password, 10);
+
     if (role)
-        register = await User.create({ email, name, password, role });
+        register = await User.create({ email, name, password: hashPassword, role });
     else
-        register = await User.create({ email, name, password });
+        register = await User.create({ email, name, password: hashPassword });
 
     const registeredUser = await User.findOne({ email: email })
 

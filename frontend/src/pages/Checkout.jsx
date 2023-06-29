@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { PriceFormatter } from '../utils/helper'
 import { PayPalButton } from 'react-paypal-button-v2';
 import { useGetClientIdQuery } from '../endpoints/paymentApiSlice';
-import axios from 'axios'
 import { usePlaceOrderMutation } from '../endpoints/orderApiSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { setCart } from '../features/cartSlice';
 
 const Checkout = () => {
@@ -21,9 +20,6 @@ const Checkout = () => {
     const getClient = useGetClientIdQuery();
     const [placeOrder] = usePlaceOrderMutation();
 
-    console.log(shippingInfo);
-    console.log(cartProducts)
-    let dataToBeSend = ''
 
     useEffect(() => {
 
@@ -32,7 +28,7 @@ const Checkout = () => {
         if (data?.clientId != undefined)
             setClientId(data?.clientId)
 
-    }, [getClient, dataToBeSend])
+    }, [getClient])
 
     const successHandler = async (PaymentResult) => {
         try {
@@ -42,9 +38,14 @@ const Checkout = () => {
                 cartProducts
             }).unwrap();
 
+            console.log(result)
             localStorage.removeItem('cartProducts');
-            dispatch(setCart({ cartItems: [] }))
-            navigate('/thanks')
+
+            dispatch(setCart({ cartItems: [] }));
+
+            // <Navigate to={"/thanks"} state={{ result }} />
+
+            navigate('/thanks', { state: result })
 
         } catch (error) {
             console.log(error)
