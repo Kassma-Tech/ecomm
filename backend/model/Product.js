@@ -6,7 +6,7 @@ const productSchema = new mongoose.Schema(
         user: {
             type: mongoose.Schema.Types.ObjectId,
             require: true,
-            ref: 'userModel'
+            ref: 'User'
         },
         product_name: {
             type: String,
@@ -37,7 +37,6 @@ const productSchema = new mongoose.Schema(
         },
         itemsInStock: {
             type: Number,
-            require: true
         }
     }, {
     timestamps: true

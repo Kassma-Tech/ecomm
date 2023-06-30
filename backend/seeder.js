@@ -4,7 +4,6 @@ const Product = require('./model/product.js');
 const User = require('./model/user.js');
 
 
-
 const seeder = require('express').Router();
 
 seeder.get("/", async (req, res) => {
