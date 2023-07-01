@@ -30,6 +30,7 @@ const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
 const apiSlice = createApi({
     reducerPath: "login",
     refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
     baseQuery: baseQueryWithRefreshToken,
     endpoints: builder => ({})
 })

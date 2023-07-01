@@ -34,6 +34,7 @@ function SingleProduct(props) {
   const cartProducts = useSelector((state) => state.cart.cartProducts);
   const token = useSelector((state) => state.auth.token);
 
+  console.log(singleProduct)
   const products = singleProduct;
 
   const selectedProduct = cartProducts?.find(item => singleProduct._id === item._id)

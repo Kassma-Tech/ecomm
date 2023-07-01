@@ -6,7 +6,6 @@ import { Routes, Route } from 'react-router-dom'
 import Banner from './components/Banner'
 import Button from './components/Button'
 import Filter from './components/Filter'
-import Product from './components/product'
 import Home from './pages/Home'
 import SingleProduct from './pages/SingleProduct'
 import Cart from './pages/Cart'
@@ -18,6 +17,7 @@ import CheckOut from './pages/Checkout'
 import Thankyou from './pages/Thankyou'
 import Register from './pages/Register'
 import PurchaseHistory from './pages/PurchaseHistory'
+import Product from './pages/Product'
 
 function App() {
 
@@ -31,6 +31,7 @@ function App() {
           <Route path='/' Component={Home} />
           <Route path='/product/:id' Component={SingleProduct} />
           <Route path='/cart' Component={Cart} />
+          <Route path='/test' Component={Product} />
 
           <Route Component={RequireAuth}>
             <Route path='/shipping' Component={Shipping} />

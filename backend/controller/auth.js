@@ -40,8 +40,6 @@ const register = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
-    console.log(req.body)
-
     const user = await User.findOne({ email })
 
     if (!email || !password) return res.json({ message: 'email and password must be provided' })

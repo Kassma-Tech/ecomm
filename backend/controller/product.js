@@ -1,24 +1,57 @@
+const { default: mongoose } = require("mongoose");
 const DeleteRecord = require("../model/deleteRecord");
 const Product = require("../model/product");
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
+const { ObjectId } = require("mongodb");
 
 const getAllProducts = asyncHandler(async (req, res) => {
-  const prod = await Product.find({})
+
+  const prod = await Product.aggregate([
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'user',
+        foreignField: '_id',
+        as: 'User',
+        pipeline: [
+          {
+            $project: { name: 1, email: 1 }
+          }
+        ]
+      }
+    },
+  ])
   res.status(200).json(prod)
 
 })
+
 
 const getSingleProduct = asyncHandler(async (req, res) => {
   const id = req.params.id
-  const prod = await Product.findById(id)
-  res.status(200).json(prod)
-
+  const prod = await Product.aggregate([
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'user',
+        foreignField: '_id',
+        as: 'User',
+        pipeline: [
+          {
+            $project: { name: 1, email: 1 }
+          }
+        ]
+      }
+    },
+    { $match: { _id: new ObjectId(id) } },
+  ])
+  res.status(200).json(prod[0])
 })
+
+//server side rendering && Client side rendering
 
 const createProduct = asyncHandler(async (req, res) => {
   const { product_name, product_image, product_description, product_price, noOfProduct } = req.body;
   const { _id: id, role } = req.user;
-  console.log(role)
 
   if (role === 'seller' || role === 'admin') {
     if (!product_name || !product_image || !product_price || !noOfProduct)
@@ -38,7 +71,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { _id: loggedInID, role } = req.user;
 
-  console.log(role)
   if (role === 'admin') {
     const result = await Product.deleteOne({ _id: id })
 
@@ -85,5 +117,50 @@ const updateProduct = asyncHandler(async (req, res) => {
   return res.status(401).json({ message: "Unauthorized user" });
 })
 
-module.exports = { getAllProducts, getSingleProduct, createProduct, deleteProduct, updateProduct }
+
+const getProductByRole = asyncHandler(async (req, res) => {
+  const { _id: id, role } = req.user;
+
+  if (role === 'admin') {
+    const result = await Product.aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'User',
+          pipeline: [
+            {
+              $project: { name: 1, email: 1, role: 1 }
+            }
+          ]
+        }
+      }
+    ])
+    return res.status(200).json(result);
+  }
+  else if (role === 'seller') {
+    const result = await Product.aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'User',
+          pipeline: [
+            {
+              $project: { name: 1, email: 1 }
+            }
+          ]
+        }
+      },
+      { $match: { user: new ObjectId(id) } },
+    ])
+    return res.status(200).json(result);
+  }
+
+  return res.sendStatus(401);
+})
+
+module.exports = { getAllProducts, getSingleProduct, createProduct, deleteProduct, updateProduct, getProductByRole }
 
