@@ -9,11 +9,12 @@ import { useSelector } from 'react-redux';
 
 const Product = () => {
 
-    const fetcher = useGetProductsByRoleQuery();
+    // const fetcher = useGetProductsByRoleQuery();
     const [refresh, setIsRefresh] = useState(false);
     const [products, setProducts] = useState([]);
 
     const { token } = useSelector(state => state.auth)
+    console.log(token)
     useEffect(() => {
         // const { data } = fetcher;
         // setProducts(data);

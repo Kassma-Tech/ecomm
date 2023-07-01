@@ -31,9 +31,9 @@ function App() {
           <Route path='/' Component={Home} />
           <Route path='/product/:id' Component={SingleProduct} />
           <Route path='/cart' Component={Cart} />
-          <Route path='/test' Component={Product} />
 
           <Route Component={RequireAuth}>
+            <Route path='/my-product' Component={Product} />
             <Route path='/shipping' Component={Shipping} />
             <Route path='/checkout' Component={CheckOut} />
             <Route path='/thanks' Component={Thankyou} />
