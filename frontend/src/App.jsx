@@ -18,13 +18,29 @@ import Thankyou from './pages/Thankyou'
 import Register from './pages/Register'
 import PurchaseHistory from './pages/PurchaseHistory'
 import Product from './pages/Product'
+import { useSelector } from 'react-redux'
+import jwt_decode from 'jwt-decode'
+import DashboardHeader from './components/DashboardHeader'
+import AddProduct from './pages/AddProduct'
+import UpdateProduct from './pages/UpdateProduct'
 
 function App() {
+
+
+  const { token } = useSelector(state => state.auth)
+  let decoded
+  if (token) {
+    decoded = jwt_decode(token)
+  }
+
+
+  console.log(decoded)
 
   return (
     <>
       <TopHeader />
-      <Header />
+      {decoded?.role != 'buyer' ? <DashboardHeader /> : <Header />}
+
       <Routes >
 
         <Route Component={PersistLogin}>
@@ -36,6 +52,8 @@ function App() {
             <Route path='/my-product' Component={Product} />
             <Route path='/shipping' Component={Shipping} />
             <Route path='/checkout' Component={CheckOut} />
+            <Route path='/add-product' Component={AddProduct} />
+            <Route path='/update-product' Component={UpdateProduct} />
             <Route path='/thanks' Component={Thankyou} />
             <Route path='/purchase-history' Component={PurchaseHistory} />
           </Route>

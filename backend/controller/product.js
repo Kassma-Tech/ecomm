@@ -98,6 +98,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { _id: loggedInID, role } = req.user;
 
+
   if (role === 'admin') {
     const result = await Product.updateOne({ _id: id }, { product_name, product_image, product_description, product_price, itemsInStock });
 
@@ -108,7 +109,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   else if (role === 'seller') {
 
-    const result = await Product.updateOne({ _id: id, user: loggedInID }, { product_name, product_image, product_description, product_price, itemsInStock });
+    const result = await Product.updateOne({ _id: id, user: loggedInID }, req.body);
 
     if (result.modifiedCount == 0) return res.status(400).json({ message: "Unable to update" });
 

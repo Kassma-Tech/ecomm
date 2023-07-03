@@ -22,7 +22,7 @@ const Product = ({ product }) => {
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                     </div>
                     <div className="product__rating">
-                        <Rating rating={product.product_rating} />
+                        {product.noOfReview === 0 ? 'no review yet' : <Rating rating={product.product_rating} />}
                     </div>
                 </div>
             </div>

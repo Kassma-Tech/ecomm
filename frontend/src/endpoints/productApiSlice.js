@@ -3,6 +3,15 @@ import apiSlice from "../api/apiSlice";
 
 const productApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
+        addProduct: builder.mutation({
+            query: (product) => ({
+                url: `/api/v1/product`,
+                method: 'POST',
+                body: {
+                    ...product
+                }
+            })
+        }),
         getSingleProduct: builder.query({
             query: (id) => `/api/v1/product/${id}`
         }),
@@ -19,9 +28,12 @@ const productApiSlice = apiSlice.injectEndpoints({
             })
         }),
         updateProduct: builder.mutation({
-            query: (product_id) => ({
+            query: ({product_id, value}) => ({
                 url: `/api/v1/product/${product_id}`,
-                method: 'PATCH'
+                method: 'PATCH',
+                body: {
+                    ...value
+                }
             })
         })
     })
@@ -32,5 +44,6 @@ export const {
     useGetSingleProductQuery,
     useGetProductsByRoleQuery,
     useDeleteSingleProductMutation,
-    useUpdateProductMutation
+    useUpdateProductMutation,
+    useAddProductMutation
 } = productApiSlice

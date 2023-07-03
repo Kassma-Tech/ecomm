@@ -75,7 +75,7 @@ const Product = () => {
             key: 'action',
             render: (_id) => (
                 <Space size="middle">
-                    <Link to='/update_product'><EditNoteIcon /></Link>
+                    <Link to='/update-product' state={{ id: _id }}><EditNoteIcon /></Link>
                     <Link onClick={() => {
                         handleDelete(_id)
                     }}><DeleteForeverIcon /></Link>
