@@ -23,6 +23,7 @@ import jwt_decode from 'jwt-decode'
 import DashboardHeader from './components/DashboardHeader'
 import AddProduct from './pages/AddProduct'
 import UpdateProduct from './pages/UpdateProduct'
+import Order from './pages/Order'
 
 function App() {
 
@@ -32,9 +33,6 @@ function App() {
   if (token) {
     decoded = jwt_decode(token)
   }
-
-
-  console.log(decoded)
 
   return (
     <>
@@ -56,6 +54,7 @@ function App() {
             <Route path='/update-product' Component={UpdateProduct} />
             <Route path='/thanks' Component={Thankyou} />
             <Route path='/purchase-history' Component={PurchaseHistory} />
+            <Route path='/order' Component={Order} />
           </Route>
         </Route>
 

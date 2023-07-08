@@ -80,18 +80,6 @@ function AddProduct() {
                 </Form.Item>
 
                 <Form.Item
-                    label="Product description"
-
-                    rules={[
-                        {
-                            message: 'Please input your product description!',
-                        },
-                    ]}
-                >
-                    <TextArea name="product_description" onChange={handleChange} />
-                </Form.Item>
-
-                <Form.Item
                     label="Product price"
                     rules={[
                         {
@@ -113,6 +101,12 @@ function AddProduct() {
                     ]}
                 >
                     <Input onChange={handleChange} type="Number" name="noOfProduct" />
+                </Form.Item>
+
+                <Form.Item
+                    label="Product description"
+                >
+                    <TextArea name="product_description" onChange={handleChange} />
                 </Form.Item>
 
                 <Form.Item

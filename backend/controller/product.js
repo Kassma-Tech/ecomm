@@ -2,6 +2,7 @@ const { default: mongoose } = require("mongoose");
 const DeleteRecord = require("../model/deleteRecord");
 const Product = require("../model/product");
 const asyncHandler = require('express-async-handler');
+const Cart = require('../model/cart')
 const { ObjectId } = require("mongodb");
 
 const getAllProducts = asyncHandler(async (req, res) => {
@@ -98,9 +99,18 @@ const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { _id: loggedInID, role } = req.user;
 
+  const product = await Product.findById(id);
+
+  console.log(product)
 
   if (role === 'admin') {
-    const result = await Product.updateOne({ _id: id }, { product_name, product_image, product_description, product_price, itemsInStock });
+    const result = await Product.updateOne({ _id: id }, {
+      product_name: product_name || product.product_name,
+      product_image: product_image || product.product_image,
+      product_description: product_description || product.product_description,
+      product_price: product_price || product.product_price,
+      itemsInStock: itemsInStock || product.itemsInStock
+    });
 
     if (result.modifiedCount == 0) return res.status(400).json({ message: "Unable to update" });
 
@@ -109,7 +119,13 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   else if (role === 'seller') {
 
-    const result = await Product.updateOne({ _id: id, user: loggedInID }, req.body);
+    const result = await Product.updateOne({ _id: id, user: loggedInID }, {
+      product_name: product_name || product.product_name,
+      product_image: product_image || product.product_image,
+      product_description: product_description || product.product_description,
+      product_price: product_price || product.product_price,
+      itemsInStock: itemsInStock || product.itemsInStock
+    });
 
     if (result.modifiedCount == 0) return res.status(400).json({ message: "Unable to update" });
 

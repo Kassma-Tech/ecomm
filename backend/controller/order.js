@@ -1,6 +1,7 @@
 const Order = require('../model/order');
 const product = require('../model/product.js');
 const cart = require('../model/cart');
+const asyncHandler = require('express-async-handler');
 
 const createOrder = async (req, res) => {
     const { PaymentResult, cartProducts, shippingInfo } = req.body.orderInfo;
@@ -38,11 +39,13 @@ const createOrder = async (req, res) => {
             }
         })
 
-
         await cart.deleteMany();
         newCart?.map(async item => {
-            const { itemsInStock: itemsInStk } = await product.findById(item.product_id);
-            const res = await product.updateOne({ _id: item.product_id }, { $set: { itemsInStock: itemsInStk - item.noOfProduct } })
+            const result = await product.findById(item.product_id);
+            if (result) {
+                const itemsInStk = result.itemsInStock;
+                await product.updateOne({ _id: item.product_id }, { $set: { itemsInStock: itemsInStk - item.noOfProduct } })
+            }
         })
 
         const Res = {
@@ -55,7 +58,6 @@ const createOrder = async (req, res) => {
 }
 
 const getOrder = async (req, res) => {
-    console.log("first")
     const { _id: id } = req.user;
 
     try {
@@ -66,8 +68,42 @@ const getOrder = async (req, res) => {
     }
 }
 
+const getAllOrder = asyncHandler(async (req, res) => {
+    const { _id: loggedInId, role } = req.user;
+
+    if (role === "admin") {
+        const result = await Order.find({}).select('product_info');
+        return res.status(200).json(result)
+    }
+    else if (role === 'seller') {
+        const result = await Order.find({ user: loggedInId }).select('product_info');
+
+        const newRes = [];
+        const response = result.map(order => {
+            let tempData = {
+                orderId: order._id
+            }
+            order?.product_info.map(product => {
+                tempData = {
+                    ...tempData,
+                    noOfProduct: product?.noOfProduct,
+                    product_name: product?.product_name,
+                    product_price: product?.product_price,
+                    totalItemPrice: product?.totalItemPrice
+                }
+            })
+            newRes.push(tempData)
+        })
+        console.log(newRes)
+        return res.status(200).json(newRes)
+    }
+
+    res.status(401).json({ message: 'Unauthorized user' })
+})
+
 
 module.exports = {
     createOrder,
-    getOrder
+    getOrder,
+    getAllOrder
 }

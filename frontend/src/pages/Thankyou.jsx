@@ -6,45 +6,40 @@ import { useLocation } from 'react-router-dom';
 
 const Thankyou = () => {
 
-    const location = useLocation();
+  const location = useLocation();
 
-    const [orderedProducts, setOrderedProducts] = useState(location.state.order);
+  const [orderedProducts, setOrderedProducts] = useState(location.state.order);
 
-    const totalPrice = location.state.totalPrice;
-    console.log(location.state)
-    // if (location.state)
-    //     setOrderedProducts(location.state)
+  const totalPrice = location.state.totalPrice;
 
-
-    // console.log(orderedProducts)
-    return (
-        <Wrapper>
-            <h1>Thanks for shopping with us! Come Back Soon!</h1>
-            <div className="cart__items">
-                {orderedProducts?.map((product, i) => (
-                    <div className='cart__item__container' key={i}>
-                        <div className="product__image">
-                            <img src={product?.product_image} alt="" />
-                        </div>
-
-                        <div className="product__description">
-                            <div className="cart__item__title">
-                                <h6>{product?.product_name?.length > 50 ? product?.product_name.substring(0, 50).concat(" ...") : product.product_name}</h6>
-                                <h2>{`${PriceFormatter(product.product_price)}`}</h2>
-                            </div>
-
-                            <div className='item__price'>
-                                <p>Qty: {product.noOfProduct}</p>
-                                <h6>{PriceFormatter(product.totalItemPrice)}</h6>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-
-                <h2 className='h2'>You Paid: {PriceFormatter(totalPrice * 100)}</h2>
+  return (
+    <Wrapper>
+      <h1>Thanks for shopping with us! Come Back Soon!</h1>
+      <div className="cart__items">
+        {orderedProducts?.map((product, i) => (
+          <div className='cart__item__container' key={i}>
+            <div className="product__image">
+              <img src={product?.product_image} alt="" />
             </div>
-        </Wrapper>
-    );
+
+            <div className="product__description">
+              <div className="cart__item__title">
+                <h6>{product?.product_name?.length > 50 ? product?.product_name.substring(0, 50).concat(" ...") : product.product_name}</h6>
+                <h2>{`${PriceFormatter(product.product_price)}`}</h2>
+              </div>
+
+              <div className='item__price'>
+                <p>Qty: {product.noOfProduct}</p>
+                <h6>{PriceFormatter(product.totalItemPrice)}</h6>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <h2 className='h2'>You Paid: {PriceFormatter(totalPrice * 100)}</h2>
+      </div>
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`

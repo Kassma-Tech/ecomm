@@ -7,6 +7,7 @@ import { useGetClientIdQuery } from '../endpoints/paymentApiSlice';
 import { usePlaceOrderMutation } from '../endpoints/orderApiSlice';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { setCart } from '../features/cartSlice';
+import product from '../data/data';
 
 const Checkout = () => {
 
@@ -63,10 +64,9 @@ const Checkout = () => {
                                 <div className="product__image">
                                     <img src={product.product_image} alt="" />
                                 </div>
-
                                 <div className="product__description">
                                     <div className="cart__item__title">
-                                        <h6>{product.product_name.length > 50 ? product.product_name.substring(0, 50).concat(" ...") : product.product_name}</h6>
+                                        <h6>{product?.product_name?.length > 50 ? product?.product_name.substring(0, 50).concat(" ...") : product?.product_name}</h6>
                                         <h2>{`${PriceFormatter(product.product_price)}`}</h2>
                                     </div>
 
