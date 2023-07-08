@@ -18,13 +18,6 @@ function Cart() {
   const totalPrice = cartProducts?.reduce((total, item) => total + item.totalItemPrice, 0)
   const [cartItems, setCartItems] = useState([])
 
-  const latest = useLatest();
-
-  // useEffect(() => {
-  //   setCartItems(latest)
-  // }, [])
-
-  // const { data: cart } = useGetCartQuery();
   console.log(cartProducts);
   // console.log(cartItems);
 

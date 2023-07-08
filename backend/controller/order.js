@@ -141,14 +141,6 @@ const updateShippingStatus = asyncHandler(async (req, res) => {
 
     if (!order) return res.status(400).json({ message: "Order not exist" });
 
-
-    // const updatedOrder = order.product_info.map(order => {
-    //     order.shipping_status = shippingStatus
-    // })
-
-    // await order.updateOne();
-    // return res.status(202).json(order)
-
     const updated = await Order.updateOne({
         _id: orderId, product_info:
         {
@@ -156,13 +148,12 @@ const updateShippingStatus = asyncHandler(async (req, res) => {
                 { sellerId: loggedInUser, product_id: productId }
         }
     },
-        {
+        { $set: { 'product_info.$.shipping_status': shippingStatus } }
+    )
 
-            $set: {
-                product_info: { $set: { shipping_status: shippingStatus } }
-            }
-
-        })
+    //user
+    //buy now
+    //update shipping - frontend
 
     if (!updated) return res.status(400).json({ message: "Something went wrong" })
     return res.status(202).json({ message: "updated successfully" })

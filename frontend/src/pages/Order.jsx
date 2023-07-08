@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BASE_URL from '../URL/url';
 import { useSelector } from 'react-redux';
 import { Space, Table, Tag } from 'antd';
+import { useUpdateShippingStatusMutation } from '../endpoints/orderApiSlice';
 
 const Order = () => {
 
@@ -9,6 +10,10 @@ const Order = () => {
     const [refresh, setRefresh] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { token } = useSelector(state => state.auth);
+
+    const [updateShippingStatus] = useUpdateShippingStatusMutation();
+
+
 
     useEffect(() => {
 
