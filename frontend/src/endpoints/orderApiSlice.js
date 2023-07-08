@@ -13,15 +13,20 @@ const orderApiSlice = apiSlice.injectEndpoints({
             query: () => ({
                 url: `/api/v1/order/single`,
                 method: 'GET',
-            }),
-            refetchOnMountOrArgChange: true
+            })
         }),
         getAllOrder: builder.query({
             query: () => ({
                 url: `/api/v1/order/`,
                 method: 'GET',
-            }),
-            refetchOnMountOrArgChange: true
+            })
+        }),
+        updateShippingStatus: builder.mutation({
+            query: ({ orderId, shippingStatus }) => ({
+                url: `/api/v1/order/${orderId}`,
+                method: 'POST',
+                body: { ...shippingStatus }
+            })
         })
     })
 })
@@ -29,5 +34,6 @@ const orderApiSlice = apiSlice.injectEndpoints({
 export const {
     usePlaceOrderMutation,
     useGetSingleOrderQuery,
-    useGetAllOrderQuery
+    useGetAllOrderQuery,
+    useUpdateShippingStatusMutation
 } = orderApiSlice;

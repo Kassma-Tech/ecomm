@@ -15,10 +15,13 @@ const createOrder = async (req, res) => {
         newCart.push(
             item = {
                 ...item,
+                sellerId: item.user,
                 product_id: item.product_id || item._id
             }
         )
     })
+
+    console.log(newCart)
 
     if (PaymentResult.status === 'COMPLETED') {
 
@@ -73,13 +76,8 @@ const getAllOrder = asyncHandler(async (req, res) => {
 
     if (role === "admin") {
         const result = await Order.find({}).select('product_info');
-        return res.status(200).json(result)
-    }
-    else if (role === 'seller') {
-        const result = await Order.find({ user: loggedInId }).select('product_info');
-
         const newRes = [];
-        const response = result.map(order => {
+        result.map(order => {
             let tempData = {
                 orderId: order._id
             }
@@ -94,16 +92,85 @@ const getAllOrder = asyncHandler(async (req, res) => {
             })
             newRes.push(tempData)
         })
-        console.log(newRes)
+        return res.status(200).json(newRes)
+    }
+    else if (role === 'seller') {
+        const result = await Order.find({ product_info: { $elemMatch: { sellerId: loggedInId } } }).select('product_info');
+        console.log(result)
+
+        const newRes = [];
+        result.map(order => {
+            let tempData = {
+                orderId: order._id
+            }
+            order?.product_info.map(product => {
+                tempData = {
+                    ...tempData,
+                    productId: product?.product_id,
+                    noOfProduct: product?.noOfProduct,
+                    product_name: product?.product_name,
+                    product_price: product?.product_price,
+                    totalItemPrice: product?.totalItemPrice
+                }
+            })
+            newRes.push(tempData)
+        })
         return res.status(200).json(newRes)
     }
 
     res.status(401).json({ message: 'Unauthorized user' })
 })
 
+const updateShippingStatus = asyncHandler(async (req, res) => {
+    const { shippingStatus, productId } = req.body;
+    const { _id: loggedInUser } = req.user;
+    const { orderId } = req.params;
+
+    const shippingStatusValues = {
+        pending: "pending",
+        shipped: "shipped",
+        outForDelivery: "outForDelivery",
+        delivered: "delivered"
+    }
+
+    const isShippingStatusExist = Object.keys(shippingStatusValues).includes(shippingStatus);
+
+    if (!isShippingStatusExist) return res.status(400).json({ message: "Shipping status is not valid" });
+
+    const order = await Order.findOne({ _id: orderId, product_info: { $elemMatch: { sellerId: loggedInUser, product_id: productId } } },).select('product_info')
+
+    if (!order) return res.status(400).json({ message: "Order not exist" });
+
+
+    // const updatedOrder = order.product_info.map(order => {
+    //     order.shipping_status = shippingStatus
+    // })
+
+    // await order.updateOne();
+    // return res.status(202).json(order)
+
+    const updated = await Order.updateOne({
+        _id: orderId, product_info:
+        {
+            $elemMatch:
+                { sellerId: loggedInUser, product_id: productId }
+        }
+    },
+        {
+
+            $set: {
+                product_info: { $set: { shipping_status: shippingStatus } }
+            }
+
+        })
+
+    if (!updated) return res.status(400).json({ message: "Something went wrong" })
+    return res.status(202).json({ message: "updated successfully" })
+})
 
 module.exports = {
     createOrder,
     getOrder,
-    getAllOrder
+    getAllOrder,
+    updateShippingStatus
 }

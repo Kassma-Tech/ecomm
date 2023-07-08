@@ -10,6 +10,7 @@ const cartSchema = new mongoose.Schema({
     noOfReview: { type: Number, default: 0 },
     itemsInStock: { type: Number, default: 0 },
     noOfProduct: { type: Number, default: 0 },
+    sellerId: { type: String, require: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 
 }, { timestamps: true })

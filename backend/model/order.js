@@ -10,7 +10,9 @@ const orderSchema = new mongoose.Schema({
             product_image: { type: String, },
             product_rating: { type: Number, },
             product_price: { type: Number },
-            totalItemPrice: { type: Number }
+            totalItemPrice: { type: Number },
+            shipping_status: { type: String, default: 'pending' },
+            sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
         }
     ],
 

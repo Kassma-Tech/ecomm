@@ -2,11 +2,17 @@ import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { PriceFormatter } from '../utils/helper';
 import BASE_URL from '../URL/url';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Thankyou = () => {
 
   const location = useLocation();
+  const navigate = useNavigate();
+  const { token } = useSelector(state => state.auth);
+
+  if (!token)
+    navigate('/login')
 
   const [orderedProducts, setOrderedProducts] = useState(location.state.order);
 

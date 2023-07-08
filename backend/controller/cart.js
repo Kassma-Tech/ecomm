@@ -31,7 +31,8 @@ const addCart = asyncHandler(async (req, res) => {
             noOfReview: item.noOfReview,
             itemsInStock: item.itemsInStock,
             noOfProduct: item.noOfProduct,
-            user: user._id
+            user: user._id,
+            sellerId: item.user
         })
     })
     res.status(200).json({ ...req.body.orderInfo, user: user.id })

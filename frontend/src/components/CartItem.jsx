@@ -15,8 +15,6 @@ function CartItem({ product_id, product_name, product_image, product_price, quan
   const [updateQty] = useUpdateQtyMutation();
 
   const handleRemoveFromCart = async (id) => {
-    console.log(token)
-    console.log(id)
     if (token) {
       try {
         const res = await removeCart(id).unwrap();

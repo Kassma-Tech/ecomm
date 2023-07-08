@@ -22,6 +22,8 @@ const Checkout = () => {
     const [placeOrder] = usePlaceOrderMutation();
 
 
+    console.log(cartProducts)
+
     useEffect(() => {
 
         const { data } = getClient;
