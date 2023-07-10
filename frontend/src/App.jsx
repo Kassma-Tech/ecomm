@@ -37,7 +37,7 @@ function App() {
   return (
     <>
       <TopHeader />
-      {decoded?.role != 'buyer' ? <DashboardHeader /> : <Header />}
+      {!token ? <Header /> : decoded?.role != 'buyer' ? <DashboardHeader /> : <Header />}
 
       <Routes >
 

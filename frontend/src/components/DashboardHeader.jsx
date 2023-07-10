@@ -95,13 +95,13 @@ const DashboardHeader = () => {
                 </div>
 
                 <div className='header__menus'>
-                        <Link to='/my-product'>
-                        {decoded?.role === 'admin'? 'Products' : 'My products'}
-                            
-                        </Link>
-                    
+                    <Link to='/my-product'>
+                        {decoded?.role === 'admin' ? 'Products' : 'My products'}
 
-                    <Link to="/">Sold products</Link>
+                    </Link>
+
+
+                    <Link to="/order">Sold products</Link>
                     <Link to="/add-product">Add new product</Link>
 
                 </div>

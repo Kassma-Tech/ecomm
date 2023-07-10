@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BASE_URL from '../URL/url';
 import { useSelector } from 'react-redux';
-import { Space, Table, Tag } from 'antd';
+import { Select, Space, Table, Tag, message } from 'antd';
 import { useUpdateShippingStatusMutation } from '../endpoints/orderApiSlice';
 
 const Order = () => {
@@ -12,8 +12,6 @@ const Order = () => {
     const { token } = useSelector(state => state.auth);
 
     const [updateShippingStatus] = useUpdateShippingStatusMutation();
-
-
 
     useEffect(() => {
 
@@ -29,41 +27,103 @@ const Order = () => {
     }, [refresh])
 
     console.log(order)
+    const handleSubmit = async (shippingStatus, orderId, productId) => {
+        try {
+            const res = await updateShippingStatus({ orderId, shippingStatus: shippingStatus.toLowerCase(), productId }).unwrap();
+            setRefresh(!refresh)
+        } catch (error) {
+            message.error('something went wrong')
+        }
 
+    }
     const columns = [
         {
             title: 'OrderId',
             dataIndex: 'orderId',
-            key: 1,
         },
         {
             title: 'Product Name',
             dataIndex: 'product_name',
-            key: 2,
+            render: (product_name) => (
+                product_name?.length > 30 ? product_name.substring(0, 30).concat(' ...') : product_name
+            )
         },
         {
             title: 'Product Price',
             dataIndex: 'product_price',
-            key: 3,
         },
         {
             title: 'No of Product',
             dataIndex: 'noOfProduct',
-            key: 4,
         },
         {
             title: 'Total Price',
             dataIndex: 'totalItemPrice',
-            key: 5,
+        },
+        {
+            title: 'Shipping Status',
+            dataIndex: 'shippingStatus',
+            render: (_, { shippingStatus }) => (
+                <>
+                    <Tag color={shippingStatus === 'pending' ? 'blue' : shippingStatus === 'delivered' ? 'green' : 'volcano'}>
+                        {shippingStatus}
+                    </Tag>
+
+                </>
+            ),
+        },
+        {
+            title: 'Update Shipping Status',
+            dataIndex: 'shippingStatus',
+
+            render: (_, { shippingStatus, orderId, productId }) => {
+                return (
+
+                    shippingStatus !== 'delivered' &&
+                    <Select
+                        defaultValue={shippingStatus}
+                        style={{
+                            width: 120,
+                        }}
+                        onSelect={(value) => { handleSubmit(value, orderId, productId) }}
+                        options={[
+                            {
+                                value: 'pending',
+                                label: 'pending',
+                            },
+                            {
+                                value: 'readyForDispatch',
+                                label: 'Ready For Dispatch',
+                            },
+                            {
+                                value: 'outForDelivery',
+                                label: 'Out For Delivery',
+                            },
+                            {
+                                value: 'delivered',
+                                label: 'Delivered',
+                            },
+                            {
+                                value: 'cancelled',
+                                label: 'Cancelled',
+                            },
+
+                        ]}
+                    />
+
+                )
+            },
         },
     ];
     const handleDelete = async (product_id) => {
 
     }
 
+
+
     return (
         isLoading ? <h1>Loading...</h1> :
-            <Table columns={columns} dataSource={order} />
+            <Table columns={columns} dataSource={order} rowKey={'orderId'} />
     )
 }
 

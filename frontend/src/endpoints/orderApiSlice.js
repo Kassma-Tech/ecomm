@@ -22,10 +22,10 @@ const orderApiSlice = apiSlice.injectEndpoints({
             })
         }),
         updateShippingStatus: builder.mutation({
-            query: ({ orderId, shippingStatus }) => ({
+            query: ({ orderId, shippingStatus, productId }) => ({
                 url: `/api/v1/order/${orderId}`,
-                method: 'POST',
-                body: { ...shippingStatus }
+                method: 'PATCH',
+                body: { shippingStatus, productId }
             })
         })
     })
@@ -35,5 +35,5 @@ export const {
     usePlaceOrderMutation,
     useGetSingleOrderQuery,
     useGetAllOrderQuery,
-    useUpdateShippingStatusMutation
+    useUpdateShippingStatusMutation,
 } = orderApiSlice;

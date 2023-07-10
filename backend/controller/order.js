@@ -84,10 +84,12 @@ const getAllOrder = asyncHandler(async (req, res) => {
             order?.product_info.map(product => {
                 tempData = {
                     ...tempData,
+                    productId: product?.product_id,
                     noOfProduct: product?.noOfProduct,
                     product_name: product?.product_name,
                     product_price: product?.product_price,
-                    totalItemPrice: product?.totalItemPrice
+                    totalItemPrice: product?.totalItemPrice,
+                    shippingStatus: product?.shipping_status
                 }
             })
             newRes.push(tempData)
@@ -110,7 +112,8 @@ const getAllOrder = asyncHandler(async (req, res) => {
                     noOfProduct: product?.noOfProduct,
                     product_name: product?.product_name,
                     product_price: product?.product_price,
-                    totalItemPrice: product?.totalItemPrice
+                    totalItemPrice: product?.totalItemPrice,
+                    shippingStatus: product?.shipping_status
                 }
             })
             newRes.push(tempData)
@@ -126,12 +129,16 @@ const updateShippingStatus = asyncHandler(async (req, res) => {
     const { _id: loggedInUser } = req.user;
     const { orderId } = req.params;
 
+    console.log(req.body)
+
     const shippingStatusValues = {
         pending: "pending",
-        shipped: "shipped",
-        outForDelivery: "outForDelivery",
-        delivered: "delivered"
+        outfordelivery: "outfordelivery",
+        readyfordispatch: "readyfordispatch",
+        delivered: "delivered",
+        cancelled: 'cancelled'
     }
+
 
     const isShippingStatusExist = Object.keys(shippingStatusValues).includes(shippingStatus);
 
