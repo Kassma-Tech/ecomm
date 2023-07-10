@@ -67,7 +67,7 @@ const login = asyncHandler(async (req, res) => {
 })
 
 
-const logOut = async (req, res) => {
+const logOut = asyncHandler(async (req, res) => {
     const cookies = req.cookies;
 
     if (!cookies) return res.status(202).json({ message: "no cookies" })
@@ -80,9 +80,31 @@ const logOut = async (req, res) => {
     }
 
     res.clearCookie('refresh', { httpOnly: true, secure: true, sameSite: 'None' }).sendStatus(204);
-}
+})
+
+const changePassword = asyncHandler(async (req, res) => {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const { _id: userId } = req.user;
+
+    if (!currentPassword || !newPassword || !confirmPassword) return res.status(400).json({ message: "All filed must be filled" });
+
+    if (newPassword !== confirmPassword) return res.status(400).json({ message: "Confirm password correctly" });
+
+    const user = await User.findOne({ _id: userId });
+
+    if (user && await user.matchPassword(currentPassword)) {
+        const encodedNewPass = bcrypt.hashSync(newPassword, 10);
+        await User.updateOne({ _id: userId }, { password: encodedNewPass });
+        return res.status(200).json({ message: "Password changed successfully" });
+
+    } else {
+        return res.sendStatus(400)
+    }
+})
+
+
 
 const generateToken = (payload) => {
     return jwt.sign(payload, 'kassma', { expiresIn: '1h' })
 }
-module.exports = { login, logOut, generateToken, register }
+module.exports = { login, logOut, generateToken, register, changePassword }
