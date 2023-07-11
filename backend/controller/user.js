@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../model/user');
 
-const getAllUser = asyncHandler(async (req, res) => {
+const getAllUsers = asyncHandler(async (req, res) => {
     const users = await User.find({});
     if (!users) return res.status(404).json({ message: "No user found" })
 
@@ -23,16 +23,22 @@ const updateUser = asyncHandler(async (req, res) => {
 
     const roleList = ['buyer', 'seller'];
 
-    if (!roleList.includes(newRole.toLowerCase())) return res.status(400).json({ message: "Invalid Role" });
+    if (newRole)
+        if (!roleList.includes(newRole)) return res.status(400).json({ message: "Invalid Role" });
 
-    const isEmailExist = await User.findOne({ email: newEmail });
-    if (isEmailExist) return res.status(400).json({ message: "The email was already taken" });
+    if (newEmail) {
+        const isEmailExist = await User.findOne({ email: newEmail })
+        if (isEmailExist)
+            return res.status(400).json({ message: "The email was already taken" });
+    }
+
+    const existingUser = await User.findOne({ _id: userId });
 
     const result = await User.updateOne({ _id: userId }, {
         $set: {
-            email: newEmail || email,
-            name: newName || name,
-            role: newRole || role
+            email: newEmail || existingUser.email,
+            name: newName || existingUser.name,
+            role: newRole || existingUser.role
         }
     })
 
@@ -65,7 +71,7 @@ const deleteUserAccounts = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-    getAllUser,
+    getAllUsers,
     getSingleUser,
     updateUser,
     deleteAccount,
