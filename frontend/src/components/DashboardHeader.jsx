@@ -103,6 +103,7 @@ const DashboardHeader = () => {
 
                     <Link to="/order">Sold products</Link>
                     <Link to="/add-product">Add new product</Link>
+                    <Link to="/all-users">All Users</Link>
 
                 </div>
 

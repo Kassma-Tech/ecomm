@@ -83,6 +83,7 @@ const logOut = asyncHandler(async (req, res) => {
 })
 
 const changePassword = asyncHandler(async (req, res) => {
+    console.log(req.body)
     const { currentPassword, newPassword, confirmPassword } = req.body;
     const { _id: userId } = req.user;
 

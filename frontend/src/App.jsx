@@ -24,6 +24,10 @@ import DashboardHeader from './components/DashboardHeader'
 import AddProduct from './pages/AddProduct'
 import UpdateProduct from './pages/UpdateProduct'
 import Order from './pages/Order'
+import Users from './pages/Users'
+import Profile from './pages/Profile'
+import UpdateUser from './pages/UpdateUser'
+import UpdatePassword from './pages/UpdatePassword'
 
 function App() {
 
@@ -55,6 +59,11 @@ function App() {
             <Route path='/thanks' Component={Thankyou} />
             <Route path='/purchase-history' Component={PurchaseHistory} />
             <Route path='/order' Component={Order} />
+            <Route path='/all-users' Component={Users} />
+            <Route path='/profile' Component={Profile} />
+            <Route path='/update-user' Component={UpdateUser} />
+            <Route path='/update-password' Component={UpdatePassword} />
+
           </Route>
         </Route>
 

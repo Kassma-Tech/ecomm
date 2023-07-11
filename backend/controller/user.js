@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const User = require('../model/user');
 
 const getAllUsers = asyncHandler(async (req, res) => {
-    const users = await User.find({});
+    const users = await User.find({}).select(["name", "role", "email", "_id"]);
     if (!users) return res.status(404).json({ message: "No user found" })
 
     res.status(200).json(users);
@@ -17,7 +17,16 @@ const getSingleUser = asyncHandler(async (req, res) => {
     res.status(200).json(user);
 })
 
+const getCurrentUser = asyncHandler(async (req, res) => {
+    const { _id: userId } = req.user;
+    const user = await User.findOne({ _id: userId });
+    if (!user) return res.status(404).json({ message: "No user found" });
+
+    res.status(200).json(user);
+})
+
 const updateUser = asyncHandler(async (req, res) => {
+
     const { _id: userId } = req.user;
     const { email: newEmail, name: newName, role: newRole } = req.body;
 
@@ -75,5 +84,6 @@ module.exports = {
     getSingleUser,
     updateUser,
     deleteAccount,
-    deleteUserAccounts
+    deleteUserAccounts,
+    getCurrentUser
 }
