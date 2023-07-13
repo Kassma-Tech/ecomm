@@ -107,8 +107,8 @@ function SingleProduct(props) {
           <div className="price">
             <h4>{`${PriceFormatter(products?.product_price)}`}</h4>
           </div>
-          <div className="actions">
-            <div className="counter">
+          <div className="action">
+            <div className="counters">
               <div className="count__action">
                 <p onClick={decrease}>-</p>
                 <p>{itemCount}</p>
@@ -116,7 +116,7 @@ function SingleProduct(props) {
               </div>
               <p className="total__items">Only 46 items left</p>
             </div>
-            <div className="main__actions">
+            <div className="main__action">
               <button className="btn__buyNow">Buy Now</button>
 
               <button
@@ -199,15 +199,15 @@ const Wrapper = styled.div`
     padding: 20px;
   }
 
-  .singleProduct__details .actions .main__actions {
+  .singleProduct__details .action .main__action {
     display: flex;
   }
 
-  .singleProduct__details .actions > * {
+  .singleProduct__details .action > * {
     margin-bottom: 25px;
   }
 
-  .singleProduct__details .actions .main__actions .btn__buyNow {
+  .singleProduct__details .action .main__action .btn__buyNow {
     padding: 15px 30px;
     width: 200px;
     background-color: #013d2b;
@@ -217,7 +217,7 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 
-  .singleProduct__details .actions .main__actions .btn__addToCart {
+  .singleProduct__details .action .main__action .btn__addToCart {
     padding: 15px 30px;
     width: 200px;
     background-color: #fff;
@@ -228,23 +228,23 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 
-  .singleProduct__details .actions .main__actions .btn__addToCart:hover,
+  .singleProduct__details .action .main__action .btn__addToCart:hover,
   .btn__remove__item__cart:hover {
     background-color: #185f4a;
     color: #fff;
   }
 
-  .singleProduct__details .actions .main__actions .btn__buyNow:hover {
+  .singleProduct__details .action .main__action .btn__buyNow:hover {
     background-color: #fff;
     border: 3px solid #013d2b;
     color: #013d2b;
   }
 
-  .singleProduct__details .actions .counter {
+  .singleProduct__details .action .counters {
     display: flex;
   }
 
-  .singleProduct__details .actions .counter .count__action {
+  .singleProduct__details .action .counters .count__action {
     background-color: #ececed;
     display: flex;
     justify-content: space-between;
@@ -252,16 +252,22 @@ const Wrapper = styled.div`
     border: 3px solid #013d2b;
     border-radius: 30px;
     color: #013d2b;
-    font-size: 1.2rem;
-    width: 80px;
+    width: 150px;
     padding: 10px 30px;
     margin: 15px 20px 20px 0;
     cursor: pointer;
   }
 
-  .singleProduct__details .actions .counter p {
+  .singleProduct__details .action .counters p {
     display: flex;
     align-items: center;
+    margin-top: 20px;
+  }
+  .singleProduct__details .action .counters .count__action p {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+
   }
 
   .singleProduct__images img {

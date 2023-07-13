@@ -6,23 +6,48 @@ import { PriceFormatter } from '../utils/helper';
 
 const Product = ({ product }) => {
     return (
-        <Wrapper>
-            <div className="product">
-                <div className="product__image">
+        // <Wrapper>
+        //     <div className="product">
+        //         <div className="product__image">
+        //             <Link to={`/product/${product._id}`}>
+        //                 <img src={product.product_image} alt="" />
+        //             </Link>
+        //         </div>
+        //         <div className="product__detail">
+        //             <div className="product__name__pricing">
+        //                 <h2>{product.product_name}</h2>
+        //                 <h1>{`${PriceFormatter(product.product_price)}`}</h1>
+        //             </div>
+        //             <div className="product__description">
+        //                 <p>Lorem ipsum dolor sit amet consectetur</p>
+        //             </div>
+        //             <div className="product__rating">
+        //                 {product.noOfReview === 0 ? 'no review yet' : <Rating rating={product.product_rating} />}
+        //             </div>
+        //         </div>
+        //     </div>
+        // </Wrapper>
+        <Wrapper className=" col-sm-6 col-md-4 col-lg-3 mb-4 mb-lg-4 ">
+            <div className="card product">
+                <div className='product__image'>
                     <Link to={`/product/${product._id}`}>
-                        <img src={product.product_image} alt="" />
+                        <img src={product.product_image}
+                            className="card-img-top" alt="Laptop" />
                     </Link>
                 </div>
-                <div className="product__detail">
-                    <div className="product__name__pricing">
-                        <h2>{product.product_name}</h2>
-                        <h1>{`${PriceFormatter(product.product_price)}`}</h1>
+                <div className="card-body">
+                    <div className="d-flex justify-content-between mb-3">
+                        <div className='d-flex title__container '>
+                            <h5 className="mb-0 mr-2 title">{product.product_name}</h5>
+                            <h4 className="text-dark mb-0 price">{`${PriceFormatter(product.product_price)}`}</h4>
+                        </div>
                     </div>
-                    <div className="product__description">
-                        <p>Lorem ipsum dolor sit amet consectetur</p>
-                    </div>
-                    <div className="product__rating">
-                        {product.noOfReview === 0 ? 'no review yet' : <Rating rating={product.product_rating} />}
+
+                    <div className="d-flex justify-content-between mb-2">
+                        <p className="text-muted mb-0">Review <span className="fw-bold">{product.noOfReview}</span></p>
+                        <div className="ms-auto text-warning">
+                            {<Rating rating={product.product_rating} />}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -31,15 +56,18 @@ const Product = ({ product }) => {
 }
 
 const Wrapper = styled.div`
-    width: 80%;
-    margin: 0;
 
-
-    .title {font-size: 1.6rem; font-weight: 700}
+    .title__container{width: 100%}
+    h5{width: 75%}
+    h4{width: 25%; text-align: right}
+    .title {font-size: 1.1rem; font-weight: 500}
+    .price {font-size: 1.1rem; font-weight: 600}
     .product {
-        width: 250px;
-        height: 400px;
-        max-height: 400px;
+        width: 100%;
+        height: 350px;
+        max-height: 350px;
+        padding: 0 !important;
+        margin: 0 !important;
         /* margin-right: 10px; */
     }
 

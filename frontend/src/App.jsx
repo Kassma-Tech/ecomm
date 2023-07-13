@@ -28,6 +28,7 @@ import Users from './pages/Users'
 import Profile from './pages/Profile'
 import UpdateUser from './pages/UpdateUser'
 import UpdatePassword from './pages/UpdatePassword'
+import Test from './pages/Test'
 
 function App() {
 
@@ -40,7 +41,7 @@ function App() {
 
   return (
     <>
-      <TopHeader />
+      {/* <TopHeader /> */}
       {!token ? <Header /> : decoded?.role != 'buyer' ? <DashboardHeader /> : <Header />}
 
       <Routes >
@@ -63,6 +64,7 @@ function App() {
             <Route path='/profile' Component={Profile} />
             <Route path='/update-user' Component={UpdateUser} />
             <Route path='/update-password' Component={UpdatePassword} />
+            <Route path='/test' Component={Test} />
 
           </Route>
         </Route>

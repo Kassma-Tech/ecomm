@@ -154,6 +154,7 @@ const getProductByRole = asyncHandler(async (req, res) => {
         }
       }
     ])
+    console.log(result)
     return res.status(200).json(result);
   }
   else if (role === 'seller') {

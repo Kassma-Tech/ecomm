@@ -47,14 +47,6 @@ const Product = () => {
             }
         },
         {
-            title: 'Email',
-            dataIndex: 'User',
-            key: 'name',
-            render: (User, i) => {
-                return User[0].email
-            }
-        },
-        {
             title: 'Item in stock',
             dataIndex: 'itemsInStock',
             key: 'itemsInStock',
@@ -99,7 +91,7 @@ const Product = () => {
     }
 
     return (
-        <Table columns={columns} dataSource={products} />
+        <Table columns={columns} dataSource={products} rowKey={'_id'} />
     )
 }
 export default Product;

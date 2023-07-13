@@ -18,17 +18,12 @@ function Home() {
   return (
     <>
       <Banner />
-      <Wrapper>
-        {/* <Filters /> */}
-        <div className="products">
-          <h2 className="product__title">Headphone for you</h2>
-          <div className="product__container">
-            {products?.map((product) => (
-              <div key={product._id}>
-                <Product product={product} />
-              </div>
-            ))}
-          </div>
+      {/* <Filters /> */}
+      <Wrapper className="container-fluid py-5">
+        <div className="row">
+          {products?.map((product) => (
+            <Product product={product} key={product._id} />
+          ))}
         </div>
       </Wrapper>
     </>

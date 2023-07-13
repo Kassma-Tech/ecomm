@@ -6,10 +6,10 @@ const TopHeader = () => {
         <Wrapper>
             <div className="top__header">
                 <div className='top__header_phone'>
-                    <h4>0911090000</h4>
+                    <p>0911090000</p>
                 </div>
                 <div className='top__header_detail'>
-                    <p>50% cut for all ethiopian products</p>
+                    <p>50% cut for all products</p>
                 </div>
                 <div className='top__header_language'>
                     Eng
@@ -26,7 +26,7 @@ const Wrapper = styled.div`
         justify-content: space-between;
         background-color: #034528;
         color: #fff;
-        padding: 10px;
+        padding-top: 10px;
     }
 
 `
