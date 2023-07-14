@@ -2,24 +2,17 @@
 import React, { useEffect, useState } from "react";
 import Product from "../components/product";
 import Banner from "../components/Banner";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { fetchProducts } from "../features/productSlice";
 import { useGetAllProductsQuery } from "../endpoints/productApiSlice";
-import Head from "../components/Head";
+import Filter from "../components/Filter";
 
 function Home() {
-  const dispatch = useDispatch();
-  // const { products, error } = useSelector((state) => state.product);
 
   const { data: products } = useGetAllProductsQuery();
-
-
   return (
     <>
       <Banner />
-      {/* <Filters /> */}
+      {/* <Filter /> */}
       <Wrapper className="container-fluid py-5">
         <div className="row">
           {products?.map((product) => (

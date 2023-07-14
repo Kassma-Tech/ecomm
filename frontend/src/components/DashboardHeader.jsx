@@ -57,7 +57,7 @@ const DashboardHeader = () => {
 
                 <div className={collapse ? 'header__menus responsive' : 'header__menus'}>
                     <Link to='/my-product'>
-                        {decoded?.role === 'admin' ? 'Products' : 'My products'}
+                        {decoded?.role === 'admin' ? 'All Products' : 'My products'}
 
                     </Link>
 

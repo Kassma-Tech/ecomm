@@ -26,10 +26,9 @@ const Order = () => {
 
     }, [refresh])
 
-    console.log(order)
     const handleSubmit = async (shippingStatus, orderId, productId) => {
         try {
-            const res = await updateShippingStatus({ orderId, shippingStatus: shippingStatus.toLowerCase(), productId }).unwrap();
+            await updateShippingStatus({ orderId, shippingStatus: shippingStatus.toLowerCase(), productId }).unwrap();
             setRefresh(!refresh)
         } catch (error) {
             message.error('something went wrong')

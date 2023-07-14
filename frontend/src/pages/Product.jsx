@@ -9,25 +9,21 @@ import { useSelector } from 'react-redux';
 
 const Product = () => {
 
-    // const fetcher = useGetProductsByRoleQuery();
     const [refresh, setIsRefresh] = useState(false);
     const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const { token } = useSelector(state => state.auth)
-    console.log(token)
+
     useEffect(() => {
-        // const { data } = fetcher;
-        // setProducts(data);
         BASE_URL.get('/api/v1/products/by-role', {
             withCredentials: true,
             headers: {
                 authorization: `Bearer ${token}`
             }
-        }).then(res => setProducts(res.data))
+        }).then(res => setProducts(res.data)).finally(setIsLoading(false))
 
     }, [refresh])
-
-    console.log(products)
 
     const columns = [
         {
@@ -75,7 +71,6 @@ const Product = () => {
             ),
         },
     ];
-    // console.log(products[9].User.email)
 
 
     const [deleteSingleProduct] = useDeleteSingleProductMutation();
@@ -91,7 +86,8 @@ const Product = () => {
     }
 
     return (
-        <Table columns={columns} dataSource={products} rowKey={'_id'} />
+        isLoading ? <h1>Loading ...</h1>
+            : <Table columns={columns} dataSource={products} rowKey={'_id'} />
     )
 }
 export default Product;

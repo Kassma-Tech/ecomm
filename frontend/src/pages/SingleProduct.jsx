@@ -15,11 +15,10 @@ import { useCartMutation } from "../endpoints/cartApiSlice";
 import useCartProducts from "../hooks/useCartProducts";
 /*components */
 
-function SingleProduct(props) {
+function SingleProduct() {
   const [itemCount, setItemCount] = useState(1);
   const { id } = useParams();
   const [messageApi, contextHolder] = message.useMessage();
-  const cartProd = useCartProducts();
   const messages = (type, content) => {
     messageApi.open({
       type: type,
@@ -28,7 +27,7 @@ function SingleProduct(props) {
   };
 
   const dispatch = useDispatch();
-  const { data: singleProduct = {} } = useGetSingleProductQuery(id);
+  const { data: singleProduct = {}, isLoading } = useGetSingleProductQuery(id);
   const [cart] = useCartMutation();
 
   const cartProducts = useSelector((state) => state.cart.cartProducts);
@@ -66,7 +65,7 @@ function SingleProduct(props) {
   };
 
   return (
-    <Wrapper>
+    isLoading ? <h1>Loading ...</h1> : <Wrapper>
       {contextHolder}
       <div className="singleProduct">
         <div className="singleProduct__images">

@@ -11,6 +11,7 @@ const Users = () => {
 
     const [users, setUsers] = useState([]);
     const [refresh, setIsRefresh] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const { token } = useSelector(state => state.auth);
     const [userId, setUserId] = useState('');
     const [userApiSlice] = useDeleteUserMutation();
@@ -22,7 +23,7 @@ const Users = () => {
             headers: {
                 authorization: `Bearer ${token}`
             }
-        }).then(res => setUsers(res.data))
+        }).then(res => setUsers(res.data)).finally(setIsLoading(false))
 
     }, [refresh])
 
@@ -92,18 +93,11 @@ const Users = () => {
         })
     }
     return (
-        <>
-            <Table columns={columns} dataSource={users} rowKey='_id' />
-            {/* <Modal.confirm
-                title="Are you sure want to delete the user?"
-                icon={<ExclamationCircleOutlined />}
-                open={isModalOpen} 
-                onOk={handleDelete}
-                onCancel={handleCancel}
-                okText="Yes"
-                cancelText="No">
-            </Modal.confirm> */}
-        </>
+
+        isLoading ? <h2>Loading ...</h2>
+            : <Table columns={columns} dataSource={users} rowKey='_id' />
+
+
     );
 }
 

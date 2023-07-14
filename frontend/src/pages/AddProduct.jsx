@@ -9,6 +9,7 @@ import { useAddProductMutation } from '../endpoints/productApiSlice';
 function AddProduct() {
 
     const [isLoading, setIsLoading] = useState(false);
+    const [form] = Form.useForm();
     const [product, setProduct] = useState({
         product_name: '',
         product_image: '',
@@ -20,13 +21,17 @@ function AddProduct() {
     const [addProduct] = useAddProductMutation()
 
     const submitHandler = async () => {
+        setIsLoading(true);
         try {
-            const result = await addProduct(product).unwrap()
-
-            console.log(result)
+            await addProduct(product).unwrap()
+            message.success('Product added successfully');
+            form.resetFields();
         } catch (error) {
-            console.log(error)
+            message.error("Product not added, Please try agin!")
+        } finally {
+            setIsLoading(false)
         }
+        form.resetFields(['basic']);
 
     }
 
@@ -40,20 +45,16 @@ function AddProduct() {
     return (
         <div>
             <Form
-                name="basic"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
+                form={form}
                 style={{
-                    maxWidth: 600,
+                    maxWidth: 350,
+                    margin: '50px auto 0 auto'
                 }}
                 initialValues={{
                     remember: true,
                 }}
                 autoComplete="off"
+                layout='vertical'
                 onFinish={submitHandler}
             >
                 <Form.Item
@@ -109,14 +110,8 @@ function AddProduct() {
                     <TextArea name="product_description" onChange={handleChange} />
                 </Form.Item>
 
-                <Form.Item
-
-                    wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                    }}
-                >
-                    <Button type="primary" htmlType="submit" style={{ width: 400 }} disabled={isLoading ? true : false}>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" style={{ width: 350 }} disabled={isLoading ? true : false}>
                         {isLoading ? <LoadingOutlined size={10} /> : "Add product"}
                     </Button>
                 </Form.Item>
