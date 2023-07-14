@@ -114,7 +114,7 @@ function SingleProduct(props) {
                 <p>{itemCount}</p>
                 <p onClick={increase}>+</p>
               </div>
-              <p className="total__items">Only 46 items left</p>
+              <p className="total__items">{`Only ${products?.itemsInStock} items left`}</p>
             </div>
             <div className="main__action">
               <button className="btn__buyNow">Buy Now</button>
@@ -253,6 +253,7 @@ const Wrapper = styled.div`
     border-radius: 30px;
     color: #013d2b;
     width: 150px;
+    height: 50px;
     padding: 10px 30px;
     margin: 15px 20px 20px 0;
     cursor: pointer;
@@ -277,5 +278,50 @@ const Wrapper = styled.div`
     margin: 0 auto;
     text-align: center;
   }
+  @media screen and (max-width: 960px) {
+  /* Single Product */
+
+  .singleProduct__details,
+  .singleProduct__images {
+    width: 100%;
+  }
+
+  .secondary__images>* {
+    width: 150px;
+  }
+  .primary__image {
+    width: 100%;
+    height: 350px;
+    background-color: #ececed;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .description {
+    display: none;
+  }
+
+  .singleProduct__details,
+  .singleProduct__images {
+    width: 100%;
+  }
+
+  .secondary__images>* {
+    width: 100px;
+  }
+
+  .primary__image {
+    width: 100%;
+    height: 250px;
+    background-color: #ececed;
+  }
+
+  .secondary__images > * {
+    width: 70px;
+    height: 50px;
+    background-color: #ececed;
+  }
+}
+  
 `;
 export default SingleProduct;
