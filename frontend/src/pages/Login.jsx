@@ -63,15 +63,11 @@ const Login = () => {
         <>
             <Form
                 name="basic"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
+
+                layout='vertical'
                 style={{
                     maxWidth: 300,
-                    margin: '0 auto'
+                    margin: '50px auto 0 auto'
                 }}
                 initialValues={{
                     remember: true,

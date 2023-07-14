@@ -57,11 +57,12 @@ const Register = () => {
                 name="basic"
                 style={{
                     maxWidth: 300,
-                    margin: '0 auto'
+                    margin: '50px auto 0 auto'
                 }}
                 initialValues={{
                     remember: false,
                 }}
+                layout='vertical'
                 autoComplete="off"
                 onFinish={submitHandler}
             >

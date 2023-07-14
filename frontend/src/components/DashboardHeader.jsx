@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -15,6 +15,8 @@ import { useLogoutMutation } from '../endpoints/authApiSlice';
 import { setCredentials } from '../features/authSlice';
 import { setCart } from '../features/cartSlice';
 import jwt_decode from 'jwt-decode'
+import MenuIcon from '@mui/icons-material/Menu';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const DashboardHeader = () => {
 
@@ -26,51 +28,6 @@ const DashboardHeader = () => {
     const [logout] = useLogoutMutation();
     const dispatch = useDispatch();
 
-    const items = [
-        {
-            label: (
-                <Link target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                    1st menu item
-                </Link>
-            ),
-            key: '0',
-        },
-        {
-            label: (
-                <Link target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                    2nd menu item
-                </Link>
-            ),
-            key: '1',
-        },
-        {
-            type: 'divider',
-        },
-        {
-            label: '3rd menu item（disabled）',
-            key: '3',
-            disabled: true,
-        },
-    ];
-
-    const items1 = [
-        {
-            label: (
-                <Link to='/profile'>
-                    <PersonIcon /> Profile
-                </Link>
-            ),
-            key: '0',
-        },
-        {
-            label: (
-                <Link to='purchase-history'>
-                    <HistoryIcon /> Purchase History
-                </Link>
-            ),
-            key: '1',
-        }
-    ]
     const logOutHandler = async () => {
         try {
             await logout();
@@ -87,6 +44,10 @@ const DashboardHeader = () => {
         decoded = jwt_decode(token)
     }
 
+    const [collapse, setIsCollapse] = useState(false);
+    const expandHandler = () => {
+        collapse ? setIsCollapse(false) : setIsCollapse(true);
+    }
     return (
         <Wrapper>
             <div className="header">
@@ -94,7 +55,7 @@ const DashboardHeader = () => {
                     <Link to="/"><img src={starLogo} alt="" /></Link>
                 </div>
 
-                <div className='header__menus'>
+                <div className={collapse ? 'header__menus responsive' : 'header__menus'}>
                     <Link to='/my-product'>
                         {decoded?.role === 'admin' ? 'Products' : 'My products'}
 
@@ -105,9 +66,49 @@ const DashboardHeader = () => {
                     <Link to="/add-product">Add new product</Link>
                     <Link to="/all-users">All Users</Link>
 
+                    <div className='header__desktop'>
+
+
+                        {!token ? <div style={{ display: 'flex' }}><PersonIcon /> <Link to='/register' onClick={() => { setIsCollapse(false) }}>Register</Link></div>
+                            : <Dropdown
+                                menu={{
+                                    items: [
+                                        {
+                                            label: (
+                                                <Link to='/profile'>
+                                                    <PersonIcon /> Profile
+                                                </Link>
+                                            ),
+                                            key: '0',
+                                        },
+                                        {
+                                            label: (
+                                                <Link to='purchase-history'>
+                                                    <HistoryIcon /> Purchase History
+                                                </Link>
+                                            ),
+                                            key: '1',
+                                        }
+                                    ],
+                                }}
+                            >
+                                <Link onClick={(e) => e.preventDefault()}>
+                                    Profile
+                                </Link>
+                            </Dropdown>
+
+                        }
+                        {!token
+                            ? <div style={{ display: 'flex' }}><PersonIcon /> <Link to="/login" onClick={() => { setIsCollapse(false) }}>Sign In</Link></div>
+                            : <div style={{ display: 'flex' }}><PersonIcon /> <Link onClick={logOutHandler}>Sign Out</Link></div>}
+
+                    </div>
                 </div>
 
-                <div className='header__actions'>
+                <div className='mobile__menu mobile__cart' ><ShoppingCartIcon /><Link to="/cart">Cart: {quantity}</Link></div>
+
+
+                <div className='header__actions mobile__sub__menu'>
                     <div style={{ display: 'flex' }}><ShoppingCartIcon /><Link to="/cart">Cart: {quantity}</Link></div>
 
                     {!token
@@ -144,6 +145,9 @@ const DashboardHeader = () => {
 
                     }
                 </div>
+                <div className="mobile__menu" onClick={expandHandler}>
+                    {collapse ? <ClearIcon /> : <MenuIcon />}
+                </div>
             </div>
         </Wrapper>
     );
@@ -151,24 +155,44 @@ const DashboardHeader = () => {
 
 
 const Wrapper = styled.div`
+    position: relative;
+    top: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 999;
+        box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5);
+        
+.mobile__menu {
+    display: none;
+}
+
+.header__desktop {
+    display: none;
+}
   .header {
     width: 80%;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     padding:10px 0;
+
   }
   .header>* {
     font-size: 1.1rem;
   }
 
-  .header__menus a,  .header__actions a{
+  .header__menus a,  .header__actions a , .mobile__cart a{
     margin: 0 10px;
     text-decoration: none;
     color: #111;
     font-size: 1rem;
     font-weight: 500;
+  }
+  .mobile__cart a {
+    text-align: right;
   }
   .header__actions div {
     margin: 0 10px !important;
@@ -185,7 +209,66 @@ const Wrapper = styled.div`
   }
 
   .header__actions  {
-    display: flex;
+     display: flex;
+   }
+
+   .none {
+        display: none;
     }
+    
+    .mobile__sub__menu {
+        /* display: block; */
+    }
+@media screen and (max-width: 1000px) {
+    .mobile__sub__menu {
+        display: none;
+    }
+
+    .header__desktop {
+        display: block;
+    }
+    .mobile__menu {
+        display: block;
+    }
+    .header {
+        width: 100% !important;
+    }
+
+    .header__menus {
+        transition: ease 0.8s;
+        background-color: #034528;
+        width: 200px;
+        padding: 20px;
+        z-index: 999;  
+        display: none;
+    }
+
+    
+    
+    .responsive {
+        position: absolute;
+        top: 100%;
+        right: 0%;
+        width: 0;
+        display: flex;
+        flex-direction: column;
+        transition: ease 0.8s;
+        background-color: #034528;
+        width: 200px;
+        padding: 20px;
+        z-index: 999; 
+    }
+
+    .responsive a {
+        margin: 10px 10px !important;;
+        text-decoration: none !important;;
+        color: #fff !important;;
+        font-size: 1rem !important;;
+        font-weight: 500 !important;;
+    }
+    .header__actions {
+
+    }
+}
 `
 export default DashboardHeader;
