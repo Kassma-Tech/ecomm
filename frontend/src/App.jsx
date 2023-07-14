@@ -29,6 +29,7 @@ import Profile from './pages/Profile'
 import UpdateUser from './pages/UpdateUser'
 import UpdatePassword from './pages/UpdatePassword'
 import Test from './pages/Test'
+import Head from './components/Head'
 
 function App() {
 

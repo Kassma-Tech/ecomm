@@ -55,17 +55,12 @@ const Register = () => {
         <div>
             <Form
                 name="basic"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
                 style={{
-                    maxWidth: 600,
+                    maxWidth: 300,
+                    margin: '0 auto'
                 }}
                 initialValues={{
-                    remember: true,
+                    remember: false,
                 }}
                 autoComplete="off"
                 onFinish={submitHandler}
@@ -106,11 +101,10 @@ const Register = () => {
                     <Input.Password name="password" onChange={handleChange} />
                 </Form.Item>
                 <Form.Item
-                    label="Role"
-                >
+                    label="Role">
                     <Select
                         defaultValue="buyer"
-                        style={{ width: 400 }}
+                        style={{ width: 300 }}
                         onSelect={(value, event) => {
                             selectHandler(value, event)
                         }}
@@ -119,14 +113,8 @@ const Register = () => {
                     />
                 </Form.Item>
 
-                <Form.Item
-
-                    wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                    }}
-                >
-                    <Button type="primary" htmlType="submit" style={{ width: 400 }} disabled={isLoading ? true : false}>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" style={{ width: 300 }} disabled={isLoading ? true : false}>
                         {isLoading ? <LoadingOutlined size={10} /> : "Register"}
                     </Button>
                 </Form.Item>

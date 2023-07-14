@@ -8,6 +8,7 @@ import { useGetCartQuery } from '../endpoints/cartApiSlice';
 import { setCart } from '../features/cartSlice';
 import useCartProducts from '../hooks/useCartProducts';
 import BASE_URL from '../URL/url';
+import { LoadingOutlined } from '@ant-design/icons'
 
 const Login = () => {
 
@@ -15,6 +16,7 @@ const Login = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
     const [login] = useLoginMutation();
+    const [isLoading, setIsLoading] = useState(false);
 
     const data = useCartProducts();
 
@@ -31,6 +33,7 @@ const Login = () => {
     }
 
     const submitHandler = async () => {
+        setIsLoading(true);
         const result = await login(loginInfo).unwrap();
         dispatch(setCredentials({ token: result?.accessToken }));
 
@@ -51,7 +54,7 @@ const Login = () => {
         }).then(res => {
             dispatch(setCart({ cartItems: res.data.data }));
             localStorage.setItem('cartProducts', JSON.stringify(res.data.data));
-        }).catch(err => console.log(err))
+        }).catch(err => console.log(err)).finally(setIsLoading(false))
 
         navigate(-1, { replace: true });
     }
@@ -67,7 +70,8 @@ const Login = () => {
                     span: 16,
                 }}
                 style={{
-                    maxWidth: 600,
+                    maxWidth: 300,
+                    margin: '0 auto'
                 }}
                 initialValues={{
                     remember: true,
@@ -100,18 +104,17 @@ const Login = () => {
                     <Input.Password name="password" onChange={handleLogin} />
                 </Form.Item>
 
-                <Form.Item
-                    wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                    }}
-                >
-                    <Button type="primary" htmlType="submit">
-                        Submit
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" style={{ width: 300 }}>
+                        {isLoading ? <LoadingOutlined size={10} /> : "Sign In"}
+                    </Button>
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" style={{ width: 300 }}>
+                        <Link to='/register' style={{ textDecoration: 'none' }}>Create an account</Link>
                     </Button>
                 </Form.Item>
             </Form>
-            <Link to='/register'>Create an account</Link>
         </>
     )
 };

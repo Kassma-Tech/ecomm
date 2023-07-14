@@ -16,7 +16,7 @@ const Banner = () => {
 const Wrapper = styled.div` 
 .banner {
     width: 80%;
-    margin: 0 auto;
+    margin:  0 auto;
 }
 
 .banner img {
@@ -25,6 +25,11 @@ const Wrapper = styled.div`
     height: 100%;
 }
 
+@media screen and (max-width: 1100px) {
+    .banner {
+        width: 100%;
+    }
+}
 
 `
 export default Banner;

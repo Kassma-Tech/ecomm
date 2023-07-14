@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { fetchProducts } from "../features/productSlice";
 import { useGetAllProductsQuery } from "../endpoints/productApiSlice";
+import Head from "../components/Head";
 
 function Home() {
   const dispatch = useDispatch();

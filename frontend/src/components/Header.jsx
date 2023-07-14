@@ -27,52 +27,8 @@ const Header = () => {
     const [logout] = useLogoutMutation();
     const dispatch = useDispatch();
 
-    const items = [
-        {
-            label: (
-                <Link target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                    1st menu item
-                </Link>
-            ),
-            key: '0',
-        },
-        {
-            label: (
-                <Link target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                    2nd menu item
-                </Link>
-            ),
-            key: '1',
-        },
-        {
-            type: 'divider',
-        },
-        {
-            label: '3rd menu item（disabled）',
-            key: '3',
-            disabled: true,
-        },
-    ];
-
-    const items1 = [
-        {
-            label: (
-                <Link to='/profile'>
-                    <PersonIcon /> Profile
-                </Link>
-            ),
-            key: '0',
-        },
-        {
-            label: (
-                <Link to='purchase-history'>
-                    <HistoryIcon /> Purchase History
-                </Link>
-            ),
-            key: '1',
-        }
-    ]
     const logOutHandler = async () => {
+        setIsCollapse(true)
         try {
             await logout();
             dispatch(setCart({ cartItems: [] }));
@@ -83,9 +39,9 @@ const Header = () => {
         }
     }
 
-    const [isMobile, setIsMobile] = useState(false);
+    const [collapse, setIsCollapse] = useState(false);
     const expandHandler = () => {
-        isMobile ? setIsMobile(false) : setIsMobile(true);
+        collapse ? setIsCollapse(false) : setIsCollapse(true);
     }
     console.log(window.innerWidth)
     return (
@@ -95,20 +51,58 @@ const Header = () => {
                     <Link to="/"><img src={starLogo} alt="" /></Link>
                 </div>
 
-                <div className={isMobile ? 'header__menus responsive' : 'header__menus'}>
+                <div className={collapse ? 'header__menus responsive' : 'header__menus'}>
 
-                    <Link onClick={(e) => e.preventDefault()}>
+                    <Link onClick={(e) => { e.preventDefault(); setIsCollapse(false); }}>
                         Categories
                     </Link>
 
-                    <Link to="/">Event</Link>
-                    <Link to="/">What's New</Link>
+                    <Link to="/" onClick={() => { setIsCollapse(false) }}>Event</Link>
+                    <Link to="/" onClick={() => { setIsCollapse(false) }}>What's New</Link>
+
+                    <div className='header__desktop'>
+                        {!token
+                            ? <div style={{ display: 'flex' }}><PersonIcon /> <Link to="/login" onClick={() => { setIsCollapse(false) }}>Sign In</Link></div>
+                            : <div style={{ display: 'flex' }}><PersonIcon /> <Link onClick={logOutHandler}>Sign Out</Link></div>}
+
+                        {!token ? <div style={{ display: 'flex' }}><PersonIcon /> <Link to='/register' onClick={() => { setIsCollapse(false) }}>Register</Link></div>
+                            : <Dropdown
+                                menu={{
+                                    items: [
+                                        {
+                                            label: (
+                                                <Link to='/profile'>
+                                                    <PersonIcon /> Profile
+                                                </Link>
+                                            ),
+                                            key: '0',
+                                        },
+                                        {
+                                            label: (
+                                                <Link to='purchase-history'>
+                                                    <HistoryIcon /> Purchase History
+                                                </Link>
+                                            ),
+                                            key: '1',
+                                        }
+                                    ],
+                                }}
+                            >
+                                <Link onClick={(e) => e.preventDefault()}>
+                                    Profile
+                                </Link>
+                            </Dropdown>
+
+                        }
+
+                    </div>
 
                 </div>
 
-                <div style={{ display: 'flex' }}><ShoppingCartIcon /><Link to="/cart">Cart: {quantity}</Link></div>
+                <div className='mobile__menu mobile__cart' ><ShoppingCartIcon /><Link to="/cart">Cart: {quantity}</Link></div>
 
-                <div className='header__actions'>
+                <div className={'header__actions mobile__sub__menu'}>
+                    <div className='header__actions' style={{ display: 'flex' }}><ShoppingCartIcon /><Link to="/cart">Cart: {quantity}</Link></div>
 
                     {!token
                         ? <div style={{ display: 'flex' }}><PersonIcon /> <Link to="/login">Sign In</Link></div>
@@ -143,10 +137,11 @@ const Header = () => {
                         </Dropdown>
 
                     }
+
                 </div>
 
                 <div className="mobile__menu" onClick={expandHandler}>
-                    {isMobile ? <ClearIcon /> : <MenuIcon />}
+                    {collapse ? <ClearIcon /> : <MenuIcon />}
                 </div>
             </div>
         </Wrapper>
@@ -168,12 +163,14 @@ const Wrapper = styled.div`
     display: none;
 }
 
-
+.header__desktop {
+    display: none;
+}
   .header {
     width: 80%;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     padding:10px 0;
 
@@ -182,12 +179,15 @@ const Wrapper = styled.div`
     font-size: 1.1rem;
   }
 
-  .header__menus a,  .header__actions a{
+  .header__menus a,  .header__actions a , .mobile__cart a{
     margin: 0 10px;
     text-decoration: none;
     color: #111;
     font-size: 1rem;
     font-weight: 500;
+  }
+  .mobile__cart a {
+    text-align: right;
   }
   .header__actions div {
     margin: 0 10px !important;
@@ -207,7 +207,21 @@ const Wrapper = styled.div`
      display: flex;
    }
 
+   .none {
+        display: none;
+    }
+    
+    .mobile__sub__menu {
+        /* display: block; */
+    }
 @media screen and (max-width: 1000px) {
+    .mobile__sub__menu {
+        display: none;
+    }
+
+    .header__desktop {
+        display: block;
+    }
     .mobile__menu {
         display: block;
     }
@@ -216,30 +230,28 @@ const Wrapper = styled.div`
     }
 
     .header__menus {
+        transition: ease 0.8s;
+        background-color: #034528;
+        width: 200px;
+        padding: 20px;
+        z-index: 999;  
+        display: none;
+    }
+
+    
+    
+    .responsive {
         position: absolute;
-        top: -100%;
+        top: 100%;
         right: 0%;
         width: 0;
         display: flex;
         flex-direction: column;
         transition: ease 0.8s;
-        z-index: -1;
-    }
-
-    
-
-    .responsive {
-        position: absolute;
-        top: 70px;
-        right: 0;
-        width: 100px;
-        display: flex;
-        flex-direction: column;
-        transition: ease 0.8s;
-        justify-content: flex-start;
         background-color: #034528;
+        width: 200px;
         padding: 20px;
-        z-index: 999;
+        z-index: 999; 
     }
 
     .responsive a {
