@@ -78,6 +78,14 @@ const Wrapper = styled.div`
 .cart__item__title, .cart__item__container h3 {
     color: #111;
 }
+
+h2, h4 {
+  font-size: 1rem;
+}
+
+h2 {
+  font-weight: 600;
+}
 .cart__item__container {
   color: #fff;
   display: flex;
