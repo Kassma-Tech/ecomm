@@ -216,10 +216,7 @@ const Wrapper = styled.div`
         display: none;
     }
     
-    .mobile__sub__menu {
-        /* display: block; */
-    }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1024px) {
     .mobile__sub__menu {
         display: none;
     }
@@ -241,9 +238,7 @@ const Wrapper = styled.div`
         padding: 20px;
         z-index: 999;  
         display: none;
-    }
-
-    
+    }  
     
     .responsive {
         position: absolute;

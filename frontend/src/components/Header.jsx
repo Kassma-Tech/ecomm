@@ -213,7 +213,7 @@ const Wrapper = styled.div`
     .mobile__sub__menu {
         /* display: block; */
     }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1024x) {
     .mobile__sub__menu {
         display: none;
     }
