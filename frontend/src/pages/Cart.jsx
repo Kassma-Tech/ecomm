@@ -232,7 +232,7 @@ const Wrapper = styled.div`
   .cart__checkout {
     max-height: 150px;
     background-color: #f9f5f5;
-    width: 50%;
+    width: 80%;
     margin: 0 auto 80px auto;
     box-shadow: 4px 4px 4px 4px #cbcbcb;
     margin-top: 50px;
