@@ -9,7 +9,7 @@ const CheckOut = () => {
     const { shippingInfo: initialInfo } = useSelector(state => state.cart);
 
     const navigate = useNavigate();
-    console.log(initialInfo)
+
     const [shippingInfo, setShippingInfo] = useState({
         first_name: initialInfo?.first_name,
         last_name: initialInfo?.last_name,

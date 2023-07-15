@@ -5,9 +5,8 @@ import { PriceFormatter } from '../utils/helper'
 import { PayPalButton } from 'react-paypal-button-v2';
 import { useGetClientIdQuery } from '../endpoints/paymentApiSlice';
 import { usePlaceOrderMutation } from '../endpoints/orderApiSlice';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { setCart } from '../features/cartSlice';
-import product from '../data/data';
 
 const Checkout = () => {
 
@@ -21,11 +20,7 @@ const Checkout = () => {
     const getClient = useGetClientIdQuery();
     const [placeOrder] = usePlaceOrderMutation();
 
-
-    console.log(cartProducts)
-
     useEffect(() => {
-
         const { data } = getClient;
 
         if (data?.clientId != undefined)
@@ -45,8 +40,6 @@ const Checkout = () => {
             localStorage.removeItem('cartProducts');
 
             dispatch(setCart({ cartItems: [] }));
-
-            // <Navigate to={"/thanks"} state={{ result }} />
 
             navigate('/thanks', { state: result })
 
@@ -92,7 +85,7 @@ const Checkout = () => {
                             <span>{PriceFormatter(totalPrice)}</span>
                         </div>
 
-                        {clientId.length > 0 && <PayPalButton amount={totalPrice * 0.01} onSuccess={successHandler} options={{
+                        {clientId.length > 0 && <PayPalButton amount={totalPrice} onSuccess={successHandler} options={{
                             currency: 'USD',
                             clientId: clientId,
                             vault: false,

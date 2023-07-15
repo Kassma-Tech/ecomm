@@ -14,12 +14,12 @@ const Thankyou = () => {
   if (!token)
     navigate('/login')
 
-  const [orderedProducts, setOrderedProducts] = useState(location.state.order);
+  const [orderedProducts, setOrderedProducts] = useState(location.state?.order);
 
-  const totalPrice = location.state.totalPrice;
+  const totalPrice = location.state?.totalPrice;
 
   return (
-    <Wrapper>
+    orderedProducts && <Wrapper>
       <h1>Thanks for shopping with us! Come Back Soon!</h1>
       <div className="cart__items">
         {orderedProducts?.map((product, i) => (
@@ -42,7 +42,7 @@ const Thankyou = () => {
           </div>
         ))}
 
-        <h2 className='h2'>You Paid: {PriceFormatter(totalPrice * 100)}</h2>
+        <h2 className='h2'>You Paid: {PriceFormatter(totalPrice)}</h2>
       </div>
     </Wrapper>
   );
@@ -85,16 +85,15 @@ h6 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 50%;
+  width: 90%;
 }
 
 .cart__item__container {
   display: flex;
-  flex-wrap: wrap;
   margin: 15px;
   padding: 20px ;
   border-bottom: 1px solid rgb(0, 0, 0, 0.2);
-  width: 90%;
+  width: 100%;
 }
 
 .product__description>* {

@@ -43,7 +43,6 @@ const Header = () => {
     const expandHandler = () => {
         collapse ? setIsCollapse(false) : setIsCollapse(true);
     }
-    console.log(window.innerWidth)
     return (
         <Wrapper>
             <div className="header">

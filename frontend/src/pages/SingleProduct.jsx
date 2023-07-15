@@ -5,14 +5,11 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Rating from "../components/Rating";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSingleProduct } from "../features/productSlice";
-import Loading from "../components/Loading";
 import { addToCart } from "../features/cartSlice";
 import { PriceFormatter } from "../utils/helper";
 import { message } from "antd";
 import { useGetSingleProductQuery } from "../endpoints/productApiSlice";
 import { useCartMutation } from "../endpoints/cartApiSlice";
-import useCartProducts from "../hooks/useCartProducts";
 /*components */
 
 function SingleProduct() {
@@ -33,7 +30,6 @@ function SingleProduct() {
   const cartProducts = useSelector((state) => state.cart.cartProducts);
   const token = useSelector((state) => state.auth.token);
 
-  console.log(singleProduct)
   const products = singleProduct;
 
   const selectedProduct = cartProducts?.find(item => singleProduct._id === item._id)

@@ -114,11 +114,6 @@ const Order = () => {
             },
         },
     ];
-    const handleDelete = async (product_id) => {
-
-    }
-
-
 
     return (
         isLoading ? <h1>Loading...</h1> :

@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CartItem from "../components/CartItem";
 import styled from "styled-components";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PriceFormatter } from '../utils/helper'
-import { addToCart } from "../features/cartSlice";
-import { useGetCartQuery } from "../endpoints/cartApiSlice";
-import useLatest from "../hooks/useLatest";
 
 function Cart() {
   const { id } = useParams();
@@ -16,10 +13,6 @@ function Cart() {
   const { cartProducts } = useSelector((state) => state.cart);
   const quantity = cartProducts.reduce((total, item) => total + item.noOfProduct, 0);
   const totalPrice = cartProducts?.reduce((total, item) => total + item.totalItemPrice, 0)
-  const [cartItems, setCartItems] = useState([])
-
-  console.log(cartProducts);
-  // console.log(cartItems);
 
   return (
     <Wrapper>
