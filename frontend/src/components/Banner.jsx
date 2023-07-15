@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components'
 
 /* Image */
-import banner from '../assets/Image/banner.jpg'
+import banner from '../assets/Image/banner2.jpg'
 const Banner = () => {
     return (
         <Wrapper>
@@ -16,7 +16,7 @@ const Banner = () => {
 const Wrapper = styled.div` 
 .banner {
     width: 80%;
-    margin:  0 auto;
+    margin:  50px auto 0 auto;
 }
 
 .banner img {

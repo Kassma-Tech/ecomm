@@ -21,12 +21,15 @@ const TopHeader = () => {
 }
 
 const Wrapper = styled.div`
+        background-color: #034528;
+
     .top__header {
         display: flex;
         justify-content: space-between;
-        background-color: #034528;
         color: #fff;
         padding-top: 10px;
+        width: 95%;
+        margin: 0 auto;
     }
 
 `

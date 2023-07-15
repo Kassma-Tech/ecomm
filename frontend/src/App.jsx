@@ -40,7 +40,7 @@ function App() {
 
   return (
     <>
-      {/* <TopHeader /> */}
+      <TopHeader />
       {!token ? <Header /> : decoded?.role != 'buyer' ? <DashboardHeader /> : <Header />}
 
       <Routes >
