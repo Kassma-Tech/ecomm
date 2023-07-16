@@ -5,7 +5,6 @@ const { generateToken } = require("./auth");
 const refreshToken = async (req, res) => {
     const cookies = req.cookies;
 
-    console.log(cookies)
     if (!cookies?.refresh) return res.status(401).json({ message: "You are not an authorized user" });
 
     const refreshToken = cookies?.refresh
@@ -15,7 +14,7 @@ const refreshToken = async (req, res) => {
 
     if (!verifiedUser) return res.status(401).json({ message: "You are not an authorized user" });
 
-    jwt.verify(refreshToken, "kassmatech", (err, data) => {
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY, (err, data) => {
         const { _id, name, email, role } = data;
         if (err) return res.status(403).json({ message: "Forbidden" })
         const newToken = generateToken({ _id, name, email, role });

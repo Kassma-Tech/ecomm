@@ -4,11 +4,9 @@ import styled from "styled-components";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PriceFormatter } from '../utils/helper'
+import { Button } from 'antd';
 
 function Cart() {
-  const { id } = useParams();
-
-  const dispatch = useDispatch();
 
   const { cartProducts } = useSelector((state) => state.cart);
   const quantity = cartProducts.reduce((total, item) => total + item.noOfProduct, 0);
@@ -45,13 +43,24 @@ function Cart() {
               </Link>
             </div>
           </div>
-          : <h1>The cart is empty</h1>
+          :
+          <>
+            <h1>The cart is empty</h1>
+            <Button type="primary" style={{ width: 320 }}  >
+              <Link to='/'>
+                Navigate to product page
+              </Link>
+            </Button>
+          </>
       }
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
+  a {
+    text-decoration: none;
+  }
   .cart {
     width: 90%;
     display: flex;

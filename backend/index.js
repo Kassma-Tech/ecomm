@@ -9,12 +9,14 @@ const payment = require('./routes/payment.js');
 const cart = require('./routes/cart.js');
 const apiRoutes = require('./routes/index')
 const cookieParser = require('cookie-parser');
-const PORT = 4000;
+require('dotenv').config();
+
+const PORT = process.env.PORT || 4000;
 
 
 const connectToDB = async () => {
     try {
-        const connect = await connectDB("mongodb+srv://fitsacreation:LhaWy3tQpcf9p0TN@cluster0.4e3bpnj.mongodb.net/ecommerce");
+        const connect = await connectDB(process.env.MONGODB_CONNECTION_STRING);
         console.log("MongoDB connected: " + connect.connection.host)
         app.listen(PORT, () => { console.log("Server started") })
     } catch (error) {

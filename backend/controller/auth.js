@@ -31,7 +31,7 @@ const register = asyncHandler(async (req, res) => {
     }
 
     const accessToken = generateToken(payload);
-    const refreshToken = jwt.sign(payload, 'kassmatech', { expiresIn: '1d' });
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: '1d' });
 
     res.cookie('refresh', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 1000 * 60 * 60 * 24 }).json({ accessToken: accessToken })
 })
@@ -53,7 +53,7 @@ const login = asyncHandler(async (req, res) => {
             role: user.role
         }
         const accessToken = generateToken(userInfo);
-        const refreshToken = jwt.sign(userInfo, 'kassmatech', { expiresIn: '1d' })
+        const refreshToken = jwt.sign(userInfo, process.env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: '1d' })
 
         await User.updateOne({ email: email }, { token: refreshToken })
 
@@ -106,6 +106,6 @@ const changePassword = asyncHandler(async (req, res) => {
 
 
 const generateToken = (payload) => {
-    return jwt.sign(payload, 'kassma', { expiresIn: '1h' })
+    return jwt.sign(payload, process.env.TOKEN_SECRET_KEY, { expiresIn: '10m' })
 }
 module.exports = { login, logOut, generateToken, register, changePassword }

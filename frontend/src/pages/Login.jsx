@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -34,7 +34,9 @@ const Login = () => {
 
     const submitHandler = async () => {
         setIsLoading(true);
-        const result = await login(loginInfo).unwrap();
+
+        const result = await login(loginInfo).unwrap().catch(err => message.error(err?.data?.message));
+
         dispatch(setCredentials({ token: result?.accessToken }));
 
         await BASE_URL.put('/api/v1/cart/updatecart', JSON.parse(localStorage.getItem('cartProducts')), {

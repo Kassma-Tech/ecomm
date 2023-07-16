@@ -1,11 +1,9 @@
-
-import { Button, Dropdown, Form, Input, Select, message } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons'
 import TextArea from 'antd/es/input/TextArea';
 import { useState } from 'react';
 import { useGetSingleProductQuery, useUpdateProductMutation } from '../endpoints/productApiSlice';
 import { useLocation } from 'react-router-dom';
-
 
 
 function UpdateProduct() {
@@ -26,18 +24,15 @@ function UpdateProduct() {
 
     const [updateProduct] = useUpdateProductMutation()
 
-    console.log(location.state.id)
     const onFinish = async (value) => {
         console.log(value)
         try {
-            const result = await updateProduct({ product_id: location.state.id, value: product }).unwrap()
-
-            console.log(result)
+            await updateProduct({ product_id: location.state.id, value: product }).unwrap()
+            message.success('Product updates successfully')
         } catch (error) {
+            message.error('Product not updated')
             console.log(error)
         }
-
-
     }
 
     const handleChange = (e) => {
@@ -52,15 +47,11 @@ function UpdateProduct() {
             : <div>
                 <Form
                     name="basic"
-                    labelCol={{
-                        span: 8,
-                    }}
-                    wrapperCol={{
-                        span: 16,
-                    }}
                     style={{
-                        maxWidth: 600,
+                        maxWidth: 350,
+                        margin: '50px auto 0 auto'
                     }}
+                    layout='vertical'
                     initialValues={{
                         remember: true,
                     }}
@@ -68,9 +59,7 @@ function UpdateProduct() {
                     onFinish={onFinish}
                 >
                     <Form.Item
-                        label="Product name"
-
-                    >
+                        label="Product name">
                         <Input onChange={handleChange} type="name" name="product_name" defaultValue={currentProduct?.product_name} />
                     </Form.Item>
                     <Form.Item
@@ -80,16 +69,12 @@ function UpdateProduct() {
                     </Form.Item>
 
                     <Form.Item
-                        label="Product description"
-
-                    >
+                        label="Product description">
                         <TextArea name="product_description" onChange={handleChange} defaultValue={currentProduct?.product_description} />
                     </Form.Item>
 
                     <Form.Item
-                        label="Product price"
-
-                    >
+                        label="Product price">
                         <Input onChange={handleChange} type="Number" name="product_price" defaultValue={currentProduct?.product_price} />
                     </Form.Item>
 
@@ -99,14 +84,8 @@ function UpdateProduct() {
                         <Input onChange={handleChange} type="Number" name="itemsInStock" defaultValue={currentProduct?.noOfProduct} />
                     </Form.Item>
 
-                    <Form.Item
-
-                        wrapperCol={{
-                            offset: 8,
-                            span: 16,
-                        }}
-                    >
-                        <Button type="primary" htmlType="submit" style={{ width: 400 }} disabled={isLoading ? true : false}>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" style={{ width: 350 }} disabled={isLoading ? true : false}>
                             {isLoading ? <LoadingOutlined size={10} /> : "Add product"}
                         </Button>
                     </Form.Item>

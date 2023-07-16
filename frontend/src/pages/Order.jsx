@@ -117,7 +117,7 @@ const Order = () => {
 
     return (
         isLoading ? <h1>Loading...</h1> :
-            <Table columns={columns} dataSource={order} rowKey={'orderId'} />
+            <Table style={{ overflowX: 'hidden', overflow: 'auto' }} columns={columns} dataSource={order} rowKey={'orderId'} />
     )
 }
 

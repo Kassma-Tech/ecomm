@@ -28,6 +28,7 @@ import Users from './pages/Users'
 import Profile from './pages/Profile'
 import UpdateUser from './pages/UpdateUser'
 import UpdatePassword from './pages/UpdatePassword'
+import Events from './pages/Events'
 
 function App() {
 
@@ -68,6 +69,8 @@ function App() {
 
         <Route path='/login' Component={Login} />
         <Route path='/register' Component={Register} />
+        <Route path='/events' Component={Events} />
+
       </Routes>
     </>
   )

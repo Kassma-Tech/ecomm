@@ -56,7 +56,7 @@ const Header = () => {
                         Categories
                     </Link>
 
-                    <Link to="/" onClick={() => { setIsCollapse(false) }}>Event</Link>
+                    <Link to="/events" onClick={() => { setIsCollapse(false) }}>Event</Link>
                     <Link to="/" onClick={() => { setIsCollapse(false) }}>What's New</Link>
 
                     <div className='header__desktop'>
@@ -213,7 +213,7 @@ const Wrapper = styled.div`
     .mobile__sub__menu {
         /* display: block; */
     }
-@media screen and (max-width: 1024x) {
+@media screen and (max-width: 1024px) {
     .mobile__sub__menu {
         display: none;
     }

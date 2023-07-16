@@ -1,4 +1,4 @@
-import { Space, Table, Tag } from 'antd';
+import { Space, Table, Tag, message } from 'antd';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { Link } from 'react-router-dom';
@@ -77,17 +77,18 @@ const Product = () => {
     const handleDelete = async (product_id) => {
 
         try {
-            const res = await deleteSingleProduct(product_id).unwrap();
+            await deleteSingleProduct(product_id).unwrap();
+            message.success('Product deleted');
             refresh ? setIsRefresh(false) : setIsRefresh(true)
-            console.log(res)
         } catch {
+            message.error('can not deleted at this moment');
             setIsRefresh(true)
         }
     }
 
     return (
         isLoading ? <h1>Loading ...</h1>
-            : <Table columns={columns} dataSource={products} rowKey={'_id'} />
+            : <Table style={{ overflowX: 'hidden', overflow: 'auto' }} columns={columns} dataSource={products} rowKey={'_id'} />
     )
 }
 export default Product;

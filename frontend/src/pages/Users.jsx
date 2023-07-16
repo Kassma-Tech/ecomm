@@ -95,7 +95,7 @@ const Users = () => {
     return (
 
         isLoading ? <h2>Loading ...</h2>
-            : <Table columns={columns} dataSource={users} rowKey='_id' />
+            : <Table style={{ overflowX: 'hidden', overflow: 'auto' }} columns={columns} dataSource={users} rowKey='_id' />
 
 
     );

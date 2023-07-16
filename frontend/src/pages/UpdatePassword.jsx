@@ -41,18 +41,14 @@ const UpdatePassword = () => {
         <div>
             <Form
                 name="basic"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
                 style={{
-                    maxWidth: 600,
+                    maxWidth: 350,
+                    margin: '50px auto 0 auto'
                 }}
                 initialValues={{
                     remember: true,
                 }}
+                layout='vertical'
                 autoComplete="off"
                 onFinish={submitHandler}
             >
@@ -92,14 +88,8 @@ const UpdatePassword = () => {
                 >
                     <Input.Password name="confirmPassword" onChange={handleChange} />
                 </Form.Item>
-                <Form.Item
-
-                    wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                    }}
-                >
-                    <Button type="primary" htmlType="submit" style={{ width: 400 }} disabled={isLoading ? true : false}>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" style={{ width: 350 }} disabled={isLoading ? true : false}>
                         {isLoading ? <LoadingOutlined size={10} /> : "Register"}
                     </Button>
                 </Form.Item>
